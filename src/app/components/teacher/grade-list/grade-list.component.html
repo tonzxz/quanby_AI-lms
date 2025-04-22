@@ -4,7 +4,7 @@
   
   <!-- Navigation Tabs -->
   <div class="tabs-container mb-8">
-    <div class="grid grid-cols-3 gap-4 rounded-lg overflow-hidden shadow-md">
+    <div class="grid grid-cols-2 gap-4 rounded-lg overflow-hidden shadow-md">
       <button
         (click)="selectTab('quizzes')"
         [ngClass]="{
@@ -31,7 +31,7 @@
         </svg>
         Assignments
       </button>
-      <button
+      <!-- <button
         (click)="selectTab('attendanceHistory')"
         [ngClass]="{
           'bg-indigo-700 text-white': selectedTab === 'attendanceHistory',
@@ -43,7 +43,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
         Attendance
-      </button>
+      </button> -->
     </div>
   </div>
 

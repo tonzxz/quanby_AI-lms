@@ -265,14 +265,21 @@
       <label class="flex justify-center mb-4 text-sm font-semibold text-gray-600">Attach Files</label>
       <div class="flex gap-4 justify-center">
         <!-- Attach Files Buttons -->
-        <button (click)="attachFile('mp4')" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow">
+        <!-- <button (click)="attachFile('mp4')" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow">
+          <i class="fas fa-video mr-2"></i>Video
+        </button> -->
+
+        <button (click)="handleVideoOption('video')"
+ class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow">
           <i class="fas fa-video mr-2"></i>Video
         </button>
+
+
         <button (click)="attachFile('pdf')" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow">
           <i class="fas fa-file-pdf mr-2"></i>PDF
         </button>
         <button (click)="attachFile('any')" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 shadow">
-          <i class="fas fa-paperclip mr-2"></i>Other
+          <i class="fas fa-paperclip mr-2"></i>Other  
         </button>
 
       </div>

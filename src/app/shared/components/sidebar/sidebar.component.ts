@@ -62,11 +62,11 @@ export class SidebarComponent implements OnInit {
       icon : 'bx-line-chart',
       routerLink: '/student/performance'
     },
-    'SPEECH ANALYZER': {
-      redirect: 'student/speech-analyzer/record-speech',
-      icon: 'bx-spreadsheet',
-      routerLink: '/student/speech-analyzer/record-speech',
-    },
+    // 'SPEECH ANALYZER': {
+    //   redirect: 'student/speech-analyzer/record-speech',
+    //   icon: 'bx-spreadsheet',
+    //   routerLink: '/student/speech-analyzer/record-speech',
+    // },
   };
 
   teacherDashboardItems = {
@@ -117,11 +117,11 @@ export class SidebarComponent implements OnInit {
     icon: 'bx-spreadsheet',
     routerLink: '/teacher/speechlab',
   },
-  'SPEECH ANALYZER': {
-    redirect: 'teacher/speech-analyzer/record-speech',
-    icon: 'bx-spreadsheet',
-    routerLink: '/teacher/speech-analyzer/record-speech',
-  },
+  // 'SPEECH ANALYZER': {
+  //   redirect: 'teacher/speech-analyzer/record-speech',
+  //   icon: 'bx-spreadsheet',
+  //   routerLink: '/teacher/speech-analyzer/record-speech',
+  // },
   };
 
   adminDashboardItems = {
