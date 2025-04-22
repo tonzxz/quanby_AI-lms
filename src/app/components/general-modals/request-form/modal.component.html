@@ -1,0 +1,183 @@
+<div class="max-w-lg p-6 mx-auto bg-white rounded-lg shadow-lg">
+  <div class="flex items-center justify-between mb-4">
+    <h4 class="text-2xl font-semibold">{{ modalTitle }}</h4>
+    <button
+      type="button"
+      class="focus:outline-none"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <svg
+        class="w-6 h-6 text-gray-500 hover:text-gray-700"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        ></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="grid gap-4">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <input
+        type="text"
+        [(ngModel)]="firstname"
+        name="fname"
+        id="fname"
+        [placeholder]="firstNamePlaceholder"
+        class="w-full p-2 border border-gray-300 rounded-lg"
+        [ngClass]="{
+          shake: inputErrors.firstname,
+          'error-border': inputErrors.firstname
+        }"
+        required
+      />
+      <input
+        [(ngModel)]="lastname"
+        type="text"
+        name="lname"
+        id="lname"
+        [placeholder]="lastNamePlaceholder"
+        class="w-full p-2 border border-gray-300 rounded-lg"
+        [ngClass]="{
+          shake: inputErrors.lastname,
+          'error-border': inputErrors.lastname
+        }"
+        required
+      />
+    </div>
+
+    <input
+      type="text"
+      [(ngModel)]="address"
+      name="address"
+      id="address"
+      [placeholder]="addressPlaceholder"
+      class="w-full p-2 border border-gray-300 rounded-lg"
+      [ngClass]="{
+        shake: inputErrors.address,
+        'error-border': inputErrors.address
+      }"
+      required
+    />
+
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      id="email"
+      [placeholder]="emailPlaceholder"
+      class="w-full p-2 border border-gray-300 rounded-lg"
+      [ngClass]="{
+        shake: inputErrors.email,
+        'error-border': inputErrors.email
+      }"
+      required
+    />
+
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-2">
+      <div class="relative w-full">
+        <label for="birthday" class="block mb-1 text-sm font-medium text-gray-700">
+          {{ birthdayLabel }}
+        </label>
+        <input
+          type="date"
+          [(ngModel)]="birthdate"
+          name="birthday"
+          id="birthday"
+          class="w-full p-2 border border-gray-300 rounded-lg"
+          [ngClass]="{
+            shake: inputErrors.birthdate,
+            'error-border': inputErrors.birthdate
+          }"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="gender" class="block mb-1 text-sm font-medium text-gray-700">
+          {{ genderLabel }}
+        </label>
+        <select
+          [(ngModel)]="gender"
+          name="gender"
+          id="gender"
+          class="w-full p-2 border border-gray-300 rounded-lg"
+          [ngClass]="{
+            shake: inputErrors.gender,
+            'error-border': inputErrors.gender
+          }"
+          required
+        >
+          <option *ngFor="let option of genderOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <input
+      type="text"
+      [(ngModel)]="nationality"
+      name="nationality"
+      id="nationality"
+      [placeholder]="nationalityPlaceholder"
+      class="w-full p-2 border border-gray-300 rounded-lg"
+      [ngClass]="{
+        shake: inputErrors.nationality,
+        'error-border': inputErrors.nationality
+      }"
+      required
+    />
+
+    <div class="grid gap-4">
+      <input
+        [(ngModel)]="password"
+        type="password"
+        name="passwordr"
+        id="passwordr"
+        [placeholder]="passwordPlaceholder"
+        class="w-full p-2 border border-gray-300 rounded-lg"
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+        [ngClass]="{
+          shake: inputErrors.password,
+          'error-border': inputErrors.password
+        }"
+        required
+      />
+      <input
+        [(ngModel)]="confirmpassword"
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        [placeholder]="confirmPasswordPlaceholder"
+        class="w-full p-2 border border-gray-300 rounded-lg"
+        [ngClass]="{
+          shake: inputErrors.confirmpassword,
+          'error-border': inputErrors.confirmpassword
+        }"
+        required
+      />
+    </div>
+
+    <div class="text-sm text-red-500" id="message"></div>
+
+    <div class="mt-4">
+      <button
+        (click)="request()"
+        type="submit"
+        class="w-full bg-gradient-to-r from-[var(--secondary-color)] to-[var(--primary-color)] text-white py-2 rounded-lg shadow-lg hover:scale-105 transition-transform"
+      >
+        {{ requestButtonText }}
+      </button>
+    </div>
+  </div>
+</div>

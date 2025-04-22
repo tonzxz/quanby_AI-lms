@@ -1,0 +1,539 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin_options {
+  type  String @id @db.VarChar(255)
+  value String
+}
+
+model administrators {
+  id        String    @id @db.VarChar(32)
+  firstname String    @db.VarChar(50)
+  lastname  String    @db.VarChar(50)
+  email     String    @db.VarChar(100)
+  role      String?   @default("Admin") @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  profile   String?   @db.VarChar(255)
+  esign     String?   @db.VarChar(255)
+  lastseen  DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model assessment_items {
+  assessmentid String      @db.VarChar(32)
+  question     String      @db.VarChar(255)
+  type         String      @db.VarChar(30)
+  answer       String
+  options      String?
+  id           Int         @id @default(autoincrement())
+  assessments  assessments @relation(fields: [assessmentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model assessment_tasks_taken {
+  studentid    String      @db.VarChar(32)
+  assessmentid String      @db.VarChar(32)
+  takenpoints  Float       @db.Real
+  datetaken    DateTime    @default(now()) @db.Timestamp(6)
+  id           Int         @id @default(autoincrement())
+  assessments  assessments @relation(fields: [assessmentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students     students    @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model assessments {
+  courseid               String                   @db.VarChar(32)
+  title                  String                   @db.VarChar(255)
+  details                String
+  timelimit              Float                    @default(60) @db.Real
+  deadline               String                   @db.VarChar(255)
+  attachments            String?
+  settings               String?                  @db.VarChar(255)
+  id                     String                   @id @db.VarChar(32)
+  time                   DateTime                 @default(now()) @db.Timestamp(6)
+  lessonid               Int?
+  topicid                Int?
+  classid                Int?
+  pretest                Boolean?
+  assessment_items       assessment_items[]
+  assessment_tasks_taken assessment_tasks_taken[]
+  classes                classes?                 @relation(fields: [classid], references: [id], onUpdate: NoAction)
+  courses                courses                  @relation(fields: [courseid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lessons                lessons?                 @relation(fields: [lessonid], references: [id], onUpdate: NoAction)
+  topics                 topics?                  @relation(fields: [topicid], references: [id], onUpdate: NoAction)
+  Attachments            attachments[]
+  student_assessments    student_assessments[]
+}
+
+model assignments {
+  courseid            String                @db.VarChar(32)
+  title               String                @db.VarChar(255)
+  details             String
+  deadline            String                @db.VarChar(255)
+  attachments         String?
+  time                DateTime              @default(now()) @db.Timestamp(6)
+  id                  Int                   @id @default(autoincrement())
+  classid             Int?
+  classes             classes?              @relation(fields: [classid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  courses             courses               @relation(fields: [courseid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  student_assignments student_assignments[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model attachments {
+  id               Int                @id @default(autoincrement())
+  topicid          String             @db.VarChar(32)
+  attachment       String
+  type             String?            @db.VarChar(15)
+  timestamp        Int?               @default(0)
+  quiz_id          String?            @db.VarChar(32)
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  assessments      assessments?       @relation(fields: [quiz_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  topics           topics             @relation(fields: [topicid], references: [topicid], onDelete: Cascade, onUpdate: NoAction)
+  read_attachments read_attachments[]
+}
+
+model audio_files {
+  id                     Int                      @id
+  audio_file             String                   @db.VarChar(255)
+  result_speech_analyzer result_speech_analyzer[]
+}
+
+model classes {
+  courseid              String                  @db.VarChar(32)
+  class                 String                  @db.VarChar(255)
+  classcode             String                  @db.VarChar(30)
+  schedule              String                  @db.VarChar(255)
+  autoaccepts           Boolean                 @default(true)
+  id                    Int                     @id @default(autoincrement())
+  duration              Int?
+  assessments           assessments[]
+  assignments           assignments[]
+  courses               courses                 @relation(fields: [courseid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  meetings              meetings[]
+  speech_analyzer_items speech_analyzer_items[]
+  speech_labs           speech_labs[]
+  student_classes       student_classes[]
+}
+
+model courses {
+  teacherid              String        @db.VarChar(32)
+  languageid             Int
+  course                 String        @db.VarChar(255)
+  difficulty             Float         @db.Real
+  id                     String        @id @db.VarChar(32)
+  details                String?
+  filter                 String?       @db.VarChar(255)
+  image                  String?       @db.VarChar(255)
+  objectives             String?
+  target_audience        String[]
+  technical_requirements String[]
+  pretest                Boolean?      @default(false)
+  assessments            assessments[]
+  assignments            assignments[]
+  classes                classes[]
+  languages              languages     @relation(fields: [languageid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  teachers               teachers      @relation(fields: [teacherid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lessons                lessons[]
+  surveys                surveys[]
+}
+
+model interests {
+  senderid  String   @db.VarChar(32)
+  interest  String
+  timestamp DateTime @default(now()) @db.Timestamp(6)
+  status    String   @db.VarChar(30)
+  id        Int      @id @default(autoincrement())
+}
+
+model lab_meetings {
+  labid             Int
+  teacherid         String              @db.VarChar(32)
+  meetingcode       String              @db.VarChar(100)
+  participants      Float               @default(1) @db.Real
+  starttime         DateTime            @default(now()) @db.Timestamp(6)
+  endtime           DateTime?           @db.Timestamp(6)
+  id                String              @id @db.VarChar(32)
+  speech_labs       speech_labs         @relation(fields: [labid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  teachers          teachers            @relation(fields: [teacherid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  speech_attendance speech_attendance[]
+}
+
+model languages {
+  language          String              @db.VarChar(50)
+  id                Int                 @id @default(autoincrement())
+  courses           courses[]
+  practices         practices[]
+  proficiency_stamp proficiency_stamp[]
+  student_practices student_practices[]
+}
+
+model lessons {
+  courseid      String          @db.VarChar(32)
+  title         String          @db.VarChar(255)
+  details       String
+  attachments   String?
+  difficulty    Float           @default(3) @db.Real
+  background    String?         @db.VarChar(255)
+  time          DateTime        @default(now()) @db.Timestamp(6)
+  id            Int             @id @default(autoincrement())
+  assessments   assessments[]
+  courses       courses         @relation(fields: [courseid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lessons_taken lessons_taken[]
+  topics        topics[]
+}
+
+model lessons_taken {
+  studentid String    @db.VarChar(32)
+  lessonid  Int
+  progress  Float     @default(0.0) @db.Real
+  starttime DateTime  @default(now()) @db.Timestamp(6)
+  endtime   DateTime? @db.Timestamp(6)
+  id        Int       @id @default(autoincrement())
+  lessons   lessons   @relation(fields: [lessonid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students  students  @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model meetings {
+  classid      Int
+  teacherid    String    @db.VarChar(32)
+  meetingcode  String    @db.VarChar(100)
+  participants Float     @default(1) @db.Real
+  starttime    DateTime  @default(now()) @db.Timestamp(6)
+  endtime      DateTime? @db.Timestamp(6)
+  id           String    @id @db.VarChar(32)
+  classes      classes   @relation(fields: [classid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  teachers     teachers  @relation(fields: [teacherid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model messages {
+  senderid    String   @db.VarChar(32)
+  recipientid String   @db.VarChar(32)
+  message     String
+  timestamp   DateTime @default(now()) @db.Timestamp(6)
+  status      String   @db.VarChar(30)
+  id          Int      @id @default(autoincrement())
+}
+
+model notifications {
+  senderid    String   @db.VarChar(32)
+  recipientid String   @db.VarChar(32)
+  title       String   @db.VarChar(255)
+  message     String
+  timestamp   DateTime @default(now()) @db.Timestamp(6)
+  type        String   @default("notif") @db.VarChar(255)
+  status      String   @db.VarChar(30)
+  id          Int      @id @default(autoincrement())
+}
+
+model practice_tasks {
+  practiceid           Int
+  task                 String                 @db.VarChar(255)
+  description          String                 @db.VarChar(255)
+  totalpoints          Float                  @db.Real
+  id                   Int                    @id @default(autoincrement())
+  practices            practices              @relation(fields: [practiceid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  practice_tasks_taken practice_tasks_taken[]
+}
+
+model practice_tasks_taken {
+  studentid      String         @db.VarChar(32)
+  taskid         Int
+  takenpoints    Float          @db.Real
+  datetaken      DateTime       @default(now()) @db.Timestamp(6)
+  id             Int            @id @default(autoincrement())
+  students       students       @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  practice_tasks practice_tasks @relation(fields: [taskid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model practices {
+  languageid     Int
+  practice       String           @db.VarChar(255)
+  description    String           @db.VarChar(255)
+  id             Int              @id @default(autoincrement())
+  practice_tasks practice_tasks[]
+  languages      languages        @relation(fields: [languageid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model proficiency_stamp {
+  studentid  String    @db.VarChar(32)
+  languageid Int
+  spoints    Float     @default(0.0) @db.Real
+  lpoints    Float     @default(0.0) @db.Real
+  rpoints    Float     @default(0.0) @db.Real
+  speaks     Float     @default(0.0) @db.Real
+  listens    Float     @default(0.0) @db.Real
+  reads      Float     @default(0.0) @db.Real
+  id         Int       @id @default(autoincrement())
+  stamp      DateTime  @default(now()) @db.Timestamp(6)
+  languages  languages @relation(fields: [languageid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students   students  @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model read_attachments {
+  student_id    String      @db.VarChar(32)
+  attachment_id Int
+  is_read       Boolean?    @default(false)
+  id            Int         @id @default(autoincrement())
+  attachments   attachments @relation(fields: [attachment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students      students    @relation(fields: [student_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model read_topics {
+  id          Int       @id @default(autoincrement())
+  student_id  String    @db.VarChar(32)
+  topic_id    String    @db.VarChar(32)
+  is_finished Boolean?  @default(false)
+  finished_at DateTime? @default(now()) @db.Timestamp(6)
+  students    students  @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  topics      topics    @relation(fields: [topic_id], references: [topicid], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model result_speech_analyzer {
+  id                      Int                    @id @default(autoincrement())
+  audio_id                Int
+  fluency                 Int?
+  pronunciation           Int?
+  intonation              Int?
+  grammar                 Int?
+  vocabulary              Int?
+  areas_for_improvement   String?
+  created_at              DateTime?              @default(now()) @db.Timestamp(6)
+  speech_analyer_items_id Int?
+  audio_files             audio_files            @relation(fields: [audio_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  speech_analyzer_items   speech_analyzer_items? @relation(fields: [speech_analyer_items_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model speech_analyzer_items {
+  id                     Int                      @id
+  class_id               Int?
+  sentence               String?
+  result_speech_analyzer result_speech_analyzer[]
+  classes                classes?                 @relation(fields: [class_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model speech_attendance {
+  studentid    String       @db.VarChar(32)
+  meetingid    String       @db.VarChar(32)
+  timein       DateTime     @default(now()) @db.Timestamp(6)
+  id           Int          @id @default(autoincrement())
+  lab_meetings lab_meetings @relation(fields: [meetingid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students     students     @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model speech_drills {
+  practiceid       String           @db.VarChar(32)
+  drillfile        String
+  description      String?          @default("Default Description")
+  audiofile        String
+  timestamp        DateTime         @default(now()) @db.Timestamp(6)
+  id               String           @id @db.VarChar(32)
+  speech_practices speech_practices @relation(fields: [practiceid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model speech_lab_computers {
+  labid       Int
+  name        String      @db.VarChar(255)
+  address     String      @db.VarChar(255)
+  timestamp   DateTime    @default(now()) @db.Timestamp(6)
+  id          String      @id @db.VarChar(32)
+  speech_labs speech_labs @relation(fields: [labid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model speech_labs {
+  name                 String                 @db.VarChar(255)
+  id                   Int                    @id @default(autoincrement())
+  timestamp            DateTime               @default(now()) @db.Timestamp(6)
+  class_id             Int                    @default(12)
+  lab_meetings         lab_meetings[]
+  speech_lab_computers speech_lab_computers[]
+  classes              classes                @relation(fields: [class_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_speech_labs_class_id")
+}
+
+model speech_lessons {
+  moduleid       String           @db.VarChar(32)
+  description    String?          @default("Default Description")
+  lessonfile     String
+  quizfile       String
+  lessontype     String           @db.VarChar(100)
+  timestamp      DateTime         @default(now()) @db.Timestamp(6)
+  id             String           @id @db.VarChar(32)
+  speech_modules speech_modules   @relation(fields: [moduleid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  speech_quizzes speech_quizzes[]
+}
+
+model speech_modules {
+  name           String           @db.VarChar(255)
+  timestamp      DateTime         @default(now()) @db.Timestamp(6)
+  id             String           @id @db.VarChar(32)
+  speech_lessons speech_lessons[]
+}
+
+model speech_practices {
+  name          String          @db.VarChar(255)
+  timestamp     DateTime        @default(now()) @db.Timestamp(6)
+  id            String          @id @db.VarChar(32)
+  speech_drills speech_drills[]
+}
+
+model speech_quizzes {
+  lessonid       String         @db.VarChar(32)
+  studentid      String         @db.VarChar(32)
+  takenpoints    Float          @db.Real
+  totalpoints    Float          @default(10) @db.Real
+  timestamp      DateTime       @default(now()) @db.Timestamp(6)
+  id             Int            @id @default(autoincrement())
+  speech_lessons speech_lessons @relation(fields: [lessonid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students       students       @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_assessments {
+  assessmentid String      @db.VarChar(32)
+  studentid    String      @db.VarChar(32)
+  takenpoints  Float       @db.Real
+  totalpoints  Float       @default(10) @db.Real
+  timestamp    DateTime    @default(now()) @db.Timestamp(6)
+  id           Int         @id @default(autoincrement())
+  assessments  assessments @relation(fields: [assessmentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students     students    @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_assignments {
+  assignmentid Int
+  studentid    String      @db.VarChar(32)
+  attachments  String      @db.VarChar(255)
+  comments     String?
+  grade        String?     @db.VarChar(255)
+  time         DateTime    @default(now()) @db.Timestamp(6)
+  id           Int         @id @default(autoincrement())
+  feedback     String?
+  assignments  assignments @relation(fields: [assignmentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students     students    @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_classes {
+  studentid String   @db.VarChar(32)
+  classid   Int
+  pending   Boolean  @default(false)
+  id        Int      @id @default(autoincrement())
+  classes   classes  @relation(fields: [classid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students  students @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_practice_attempts {
+  studentpracticeid Int
+  currentlevel      Float             @db.Real
+  takenpoints       Float             @db.Real
+  totalpoints       Float             @default(10) @db.Real
+  timestamp         DateTime          @default(now()) @db.Timestamp(6)
+  id                Int               @id @default(autoincrement())
+  student_practices student_practices @relation(fields: [studentpracticeid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_practices {
+  studentid                 String                      @db.VarChar(32)
+  languageid                Int
+  write                     Float                       @default(1) @db.Real
+  read                      Float                       @default(1) @db.Real
+  listen                    Float                       @default(1) @db.Real
+  speak                     Float                       @default(1) @db.Real
+  id                        Int                         @id @default(autoincrement())
+  student_practice_attempts student_practice_attempts[]
+  languages                 languages                   @relation(fields: [languageid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students                  students                    @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model students {
+  id                     String                   @id @db.VarChar(32)
+  firstname              String                   @db.VarChar(50)
+  lastname               String                   @db.VarChar(50)
+  email                  String                   @db.VarChar(100)
+  password               String                   @db.VarChar(255)
+  profile                String?                  @db.VarChar(255)
+  address                String                   @db.VarChar(255)
+  nationality            String                   @db.VarChar(100)
+  birthdate              String                   @db.VarChar(100)
+  gender                 String                   @db.VarChar(20)
+  visibleid              String?                  @default("Q-6431-304442") @db.VarChar(24)
+  timeenrolled           DateTime?                @default(now()) @db.Timestamp(6)
+  lastseen               DateTime?                @default(now()) @db.Timestamp(6)
+  assessment_tasks_taken assessment_tasks_taken[]
+  lessons_taken          lessons_taken[]
+  practice_tasks_taken   practice_tasks_taken[]
+  proficiency_stamp      proficiency_stamp[]
+  read_attachments       read_attachments[]
+  read_topics            read_topics[]
+  speech_attendance      speech_attendance[]
+  speech_quizzes         speech_quizzes[]
+  student_assessments    student_assessments[]
+  student_assignments    student_assignments[]
+  student_classes        student_classes[]
+  student_practices      student_practices[]
+  surveys                surveys[]
+}
+
+model survey_items {
+  surveyid Int
+  itemno   Int
+  question String  @db.VarChar(255)
+  type     String  @db.VarChar(30)
+  answer   String
+  options  String?
+  id       Int     @id @default(autoincrement())
+  surveys  surveys @relation(fields: [surveyid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model surveys {
+  studentid    String         @db.VarChar(32)
+  courseid     String         @db.VarChar(32)
+  timestamp    DateTime       @default(now()) @db.Timestamp(6)
+  id           Int            @id @default(autoincrement())
+  survey_items survey_items[]
+  courses      courses        @relation(fields: [courseid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students     students       @relation(fields: [studentid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model teachers {
+  id           String         @id @db.VarChar(32)
+  firstname    String         @db.VarChar(50)
+  lastname     String         @db.VarChar(50)
+  email        String?        @db.VarChar(100)
+  password     String         @db.VarChar(255)
+  job          String         @db.VarChar(255)
+  profile      String?        @db.VarChar(255)
+  esign        String?        @db.VarChar(255)
+  visibleid    String?        @default("Q-6431-304442") @db.VarChar(24)
+  lastseen     DateTime?      @default(now()) @db.Timestamp(6)
+  courses      courses[]
+  lab_meetings lab_meetings[]
+  meetings     meetings[]
+}
+
+model topics {
+  id          Int           @id @default(autoincrement())
+  lessonid    Int?
+  topicid     String        @unique @db.VarChar(32)
+  title       String        @db.VarChar(255)
+  details     String?
+  assessments assessments[]
+  attachments attachments[]
+  read_topics read_topics[]
+  lessons     lessons?      @relation(fields: [lessonid], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model verification {
+  email     String  @id @db.VarChar(255)
+  token     String  @db.VarChar(255)
+  firstname String? @db.VarChar(255)
+  lastname  String? @db.VarChar(255)
+}
+
+model word_searches {
+  id     Int     @id @default(autoincrement())
+  search String  @db.VarChar(255)
+  file   String?
+}

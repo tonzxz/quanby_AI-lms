@@ -1,0 +1,166 @@
+/* Text Gradient and Background Clip */
+.date,
+.feedback,
+.analytics-label,
+.title-list-container p,
+.grade-button,
+.dropdown-button {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+}
+
+.analytics-label {
+  background-image: linear-gradient(
+    to right,
+    rgb(1, 114, 175) 0%,
+    rgb(116, 254, 189) 100%
+  );
+}
+
+.new-task-button p {
+  background: linear-gradient(
+    to right,
+    var(--secondary-color),
+    var(--secondary-color)
+  );
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.grade-button {
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+}
+
+/* Analytics Value Specific Styles */
+.analytics-value {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 90%;
+  border-radius: 50%;
+  color: transparent;
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  border: 2px solid #fff;
+}
+
+.analytics-value h1 {
+  color: #fff;
+  font-size: 40px;
+}
+
+/* Custom Dropdown Button Hover Effects */
+.dropdown-button:hover {
+  background-color: #b4e1fd;
+  box-shadow: 6px 6px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Submission Item Border */
+.submission-item {
+  border-bottom: 1px solid #80808044;
+}
+
+/* Table Styling */
+.table-container tbody {
+  background-color: #e1f3fd;
+  border-top: 10px solid #fff;
+}
+
+.table-container th {
+  background-image: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: #fff;
+}
+
+.table-container td {
+  border: 1px solid #fff;
+}
+
+/* Custom Plus Icon Styling */
+.plus-icon,
+.dropdown-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Media Queries for Specific Adjustments */
+@media screen and (min-width: 1023px) and (max-width: 1094px) {
+  .title-list-container p {
+    font-size: large;
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  .analytics {
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    height: 70px;
+    padding: 10px 15px;
+  }
+  .analytics-label h5 {
+    font-size: 15px;
+  }
+  .analytics-value {
+    width: 100%;
+    max-width: 50px;
+    height: 70%;
+    border-radius: 20%;
+  }
+  .analytics-value h1 {
+    font-size: 20px;
+  }
+  .title-list-container p {
+    font-size: large;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .analytics-container {
+    flex-wrap: wrap;
+  }
+  .analytics {
+    flex-direction: row;
+    gap: 2px;
+    width: 80%;
+    height: 50px;
+    padding: 5px 8px;
+  }
+  .analytics-label h5 {
+    font-size: 10px;
+  }
+  .analytics-value {
+    width: 100%;
+    max-width: 35px;
+    height: 70%;
+    border-radius: 20%;
+  }
+  .analytics-value h1 {
+    font-size: 14px;
+  }
+  .inbox-title-container p {
+    font-size: x-small;
+  }
+  .title-list-container p {
+    font-size: medium;
+  }
+}

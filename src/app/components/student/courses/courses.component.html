@@ -1,0 +1,58 @@
+<div class="lg:mx-8 md:mx-8 mx-4 mt-4 text-2xl font-semibold text-primary-700 instruction poppins">
+  Our Most
+  <a class="text-2xl font-semibold text-transparent poppins-b gradient-color bg-clip-text">
+    Popular Courses
+  </a>
+</div>
+<div class="md:px-8 lg:px-8 lg:ml-6 md:ml-6 px-4 ml-4 my-3 text-xl font-normal text-primary-700 description">
+  Let’s join our best classes with our famous instructor and institutes
+</div>
+
+<div class="flex items-center justify-between mx-6 my-4 lg:mx-8">
+  <div class="relative inline-block text-left dropdown">
+    <button class="w-auto px-4 py-2 text-sm font-semibold bg-white border border-gray-300 shadow rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" (click)="toggleDropdown(selectedDifficulty!)">
+      Difficulty: <span class="text-sm text-gray-500">{{ selectedDifficulty == null ? 'All' : selectedDifficulty }}</span>
+    </button>
+    <div *ngIf="showDropdown" class="absolute left-0 z-50 mt-2 w-44 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="sort-options">
+      <div class="py-1" role="none">
+        <a class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+           role="menuitem"
+           [ngClass]="{'bg-gray-200': selectedDifficulty === null}"
+           (click)="selectDifficulty(null)">All</a>
+        <a class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+           role="menuitem"
+           [ngClass]="{'bg-gray-200': selectedDifficulty === 'Beginner'}"
+           (click)="selectDifficulty('Beginner')">Beginner</a>
+        <a class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+           role="menuitem"
+           [ngClass]="{'bg-gray-200': selectedDifficulty === 'Intermediate'}"
+           (click)="selectDifficulty('Intermediate')">Intermediate</a>
+        <a class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
+           role="menuitem"
+           [ngClass]="{'bg-gray-200': selectedDifficulty === 'Advanced'}"
+           (click)="selectDifficulty('Advanced')">Advanced</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rounded-xl">
+  <div class="grid grid-cols-1 grid-rows-none lg:pt-4 md:pt-4 pt-2 pb-10 mx-2.5 lg:mx-8 gap-y-10 lg:gap-4 lg:grid-cols-3 h-1/5" *ngIf="courses != null">
+    <ng-container *ngFor="let course of courses">
+      <app-card
+        *ngIf="checkComplexity(course.complexity) || selectedDifficulty == null"
+        (click)="checkIfEnrolled(course)"
+        [enrolled]="course.enrolled"
+        [difficulty]="course.complexity"
+        [picture]="course.image ? getUrl(course.image) : 'https://img.freepik.com/free-vector/online-tutorials-concept_52683-37480.jpg'"
+        [number]="course.lessoncount + 'x Lessons'"
+        [lecture]="course.course"
+        [profilepic]="course.profile ? getUrl(course.profile) : 'https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'"
+        [name]="course.firstname + ' ' + course.lastname"
+        [job]="course.job"
+        [description]="course.details"
+        [target_audience]="course.target_audience"
+      ></app-card>
+    </ng-container>
+  </div>
+</div>

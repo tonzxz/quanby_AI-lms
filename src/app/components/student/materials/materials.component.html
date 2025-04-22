@@ -1,0 +1,153 @@
+<div class="min-h-screen py-8 bg-gray-100" style="--primary-color: #2c3e50; --secondary-color: #34495e; --accent-color: #3498db;">
+  <div class="max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] p-6 text-white">
+      <button class="mb-4 flex items-center text-sm font-medium text-white hover:text-[var(--accent-color)] transition duration-150 ease-in-out" (click)="navigateBack()">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back
+      </button>
+      <h1 class="text-3xl font-bold">{{ assignmentTitle }}</h1>
+      <p class="mt-2 text-lg" [ngClass]="{'text-red-300': overdue && !submitted, 'text-gray-300': !overdue || submitted}">
+        Due: {{ dueDate }}
+      </p>
+    </div>
+
+    <!-- Assignment Details -->
+    <div class="p-6">
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-[var(--primary-color)] mb-2">Description</h2>
+        <p class="text-gray-700">{{ description }}</p>
+      </div>
+
+        <!-- Teacher Attachments Section -->
+         <!-- Teacher Attachments Section -->
+  <div class="mb-6" *ngIf="teacherAttachments.length > 0">
+    <h2 class="text-xl font-semibold text-[var(--primary-color)] mb-2">Materials from Teacher</h2>
+    <ul class="p-4 rounded-lg bg-gray-50">
+      <li *ngFor="let file of teacherAttachments" class="mb-2 last:mb-0">
+        <a (click)="openFile(file.filePath)" class="flex items-center text-[var(--accent-color)] hover:text-[var(--secondary-color)] transition duration-150 ease-in-out">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+          </svg>
+          {{ file.fileName }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Uploaded Files Section -->
+  <div *ngIf="uploadedFiles.length > 0">
+    <h3 class="text-lg font-medium text-[var(--secondary-color)]">Uploaded Files</h3>
+    <ul class="space-y-2">
+      <li *ngFor="let file of uploadedFiles; let i = index" class="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
+        <span class="text-sm text-gray-700">{{ file }}</span>
+        <button *ngIf="editMode" type="button" (click)="removeUploadedFile(i)"
+                class="text-sm font-medium text-red-600 hover:text-red-800">
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+      <!-- Submission Form -->
+      <div class="p-6 border-t border-gray-200 bg-gray-50">
+        <h2 class="text-2xl font-bold text-[var(--primary-color)] mb-4">
+          {{ submitted ? (editMode ? 'Edit Submission' : 'Submitted Assignment') : 'Submit Assignment' }}
+        </h2>
+
+        <form class="space-y-6">
+          <!-- File Upload Section -->
+          <div *ngIf="!submitted || editMode">
+            <label for="file-upload" class="block text-sm font-medium text-[var(--secondary-color)]">Upload Files</label>
+
+            <div class="flex justify-center px-6 pt-5 pb-6 mt-1 border-2 border-gray-300 border-dashed rounded-md"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+              [ngClass]="{'bg-gray-200': isDragging}">
+
+              <div class="space-y-1 text-center">
+                <svg class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <div class="flex text-sm text-gray-600">
+                  <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-[var(--accent-color)] hover:text-[var(--secondary-color)] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[var(--accent-color)]">
+                    <span>Upload files</span>
+                    <input [readOnly]="submitted" (change)="onFileSelected($event)" id="file-upload" name="file-upload" type="file" class="sr-only" multiple>
+                  </label>
+                  <p class="pl-1">or drag and drop</p>
+                </div>
+                <p class="text-xs text-gray-500">PNG, JPG, PDF up to 10MB</p>
+              </div>
+            </div>
+
+              <!-- Display selected files -->
+              <div *ngIf="selectedFiles.length > 0" class="mt-4">
+                <h3 class="text-lg font-medium text-[var(--secondary-color)]">Selected Files</h3>
+                <ul class="space-y-2">
+                  <li *ngFor="let file of selectedFiles; let i = index" class="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
+                    <span class="text-sm text-gray-700">{{ file.name }}</span>
+                    <button type="button" (click)="removeFile(i)" class="text-sm font-medium text-red-600 hover:text-red-800">Remove</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+  <!-- Comment Section -->
+  <div>
+    <label for="comment" class="block text-sm font-medium text-[var(--secondary-color)]">Comments</label>
+    <textarea [(ngModel)]="comments" id="comment" name="comment" rows="4"
+              class="mt-1 block w-full shadow-sm focus:ring-[var(--accent-color)] focus:border-[var(--accent-color)] sm:text-sm border-gray-300 rounded-md"
+              [readonly]="submitted && !editMode"></textarea>
+  </div>
+
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold text-[var(--primary-color)] mb-2">Grading Status</h2>
+            <div *ngIf="!graded" class="text-sm text-red-500">Not Graded</div>
+            <div *ngIf="graded" class="text-sm text-green-500">
+              Graded: {{ grade }} / 100
+            </div>
+          </div>
+                  <!-- Teacher Comment Section -->
+                  <div class="mb-6" *ngIf="teacherComment != null">
+                    <h2 class="text-xl font-semibold text-[var(--primary-color)] mb-2">Teacher Feedback</h2>
+                    <div class="bg-blue-50 border-l-4 border-[var(--accent-color)] p-4 rounded-lg">
+                      <div class="flex">
+                        <div class="flex-shrink-0">
+                          <svg class="h-5 w-5 text-[var(--accent-color)]" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <div class="ml-3">
+                          <h3 class="text-sm font-medium text-[var(--secondary-color)]">{{ teachername }}</h3>
+                          <p class="mt-2 text-sm text-gray-700">{{ teacherComment }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+         <!-- Submit/Edit/Update Buttons -->
+      <div class="flex justify-between">
+        <button *ngIf="submitted && !editMode" type="button" (click)="editMode = true"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[var(--accent-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent-color)]">
+          Edit Submission
+        </button>
+        <button *ngIf="editMode" type="button" (click)="cancelEdit()"
+                class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent-color)]">
+          Cancel Edit
+        </button>
+        <button type="button" (click)="submit()"
+                [ngClass]="{'bg-green-600 hover:bg-green-700': submitted, 'bg-[var(--accent-color)] hover:bg-[var(--secondary-color)]': !submitted}"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent-color)]"
+                [attr.disabled]="uploadingFiles ? true : null">
+          {{ uploadingFiles ? 'Uploading...' : (editMode ? 'Update Submission' : (submitted ? 'Resubmit' : 'Submit Assignment')) }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 2.5rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  margin: 5px;
+  height: 100%;
+}
+
+.accept-btn,
+.cancel-btn {
+  transition: transform 0.3s ease;
+}
+
+.accept-btn:hover,
+.cancel-btn:hover {
+  transform: scale(1.2);
+}
+
+.button-container button {
+  color: var(--tertiary-color); /* Bright orange for button text */
+  background-color: var(--text-color-light); /* White background */
+  border-radius: 5px;
+  border: 1px solid var(--text-muted); /* Soft border color */
+  box-shadow: 4px 4px 2px 0 var(--box-shadow-color);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.button-container button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.button-container button span {
+  margin-right: 5px;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  top: 120%;
+}
+
+.dropdown-content .dropdown-value {
+  font-size: 12px;
+  background-color: var(
+    --secondary-color
+  ); /* Deep Blue for dropdown background */
+  color: var(--text-color-light); /* White text */
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.table-container {
+  border-collapse: collapse;
+}
+
+
+.table-container tbody {
+  background-color: var(--background-light); /* Light blue background */
+  border-top: 10px solid var(--text-color-light); /* White for separating rows */
+}
+
+.table-container th {
+  color: var(--text-color-light); /* White text */
+  background-image: linear-gradient(
+    to right,
+    var(--secondary-color) 0%,
+    var(--secondary-color) 100%
+  ); /* Gradient with Deep Blue and Bright Orange */
+  padding: 10px;
+  text-align: center;
+}
+
+.table-container td {
+  color: var(--text-muted); /* Muted dark gray text */
+  font-size: small;
+  border: 1px solid var(--text-color-light); /* White borders */
+  padding: 10px;
+  text-align: center;
+}
+
+.selected {
+  background-color: var(--primary-color); /* Dark Gray for selected rows */
+  color: var(--text-color-light); /* White text */
+}
+
+.selected td {
+  color: var(--text-color-light); /* White text in selected row cells */
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between search box and buttons */
+}
+
+.search-box {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+

@@ -1,0 +1,82 @@
+<body class="flex flex-col p-4 bg-gray-50">
+
+<p-card >
+  <!-- Header Section -->
+  <div class="flex flex-col sm:flex-row justify-between items-center py-2  mb-2">
+    <!-- Title & Subtitle on the Left -->
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Manage Courses</h1>
+      <p class="text-gray-600 text-sm">View, edit, and manage your courses effortlessly.</p>
+    </div>
+
+   <button (click)="openModal()"
+        class="flex items-center px-6 py-2 space-x-2 font-semibold text-white transition-transform duration-300 transform rounded-xl shadow-lg bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] hover:scale-105 hover:shadow-xl">
+        <span class="text-2xl material-icons">add_circle_outline</span>
+        <span class="text-lg">Create Course</span>
+      </button> 
+      
+      
+      
+  </div>
+
+  <!-- Grid for responsive layout -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">  
+    
+    <!-- Check if courseData is empty -->
+    <ng-container *ngIf="courseData.length === 0">
+      <div class="flex justify-center items-center relative rounded overflow-hidden shadow-md bg-white py-4">
+        <!-- Placeholder message -->
+        <div class="text-gray-700 text-center px-4">
+          There are no courses available. Click the button above to add a course.
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Course Cards (Kept as is) -->
+    <ng-container *ngFor="let course of courseData">
+      <div *ngIf="languages.get(selectedLanguage) == null || course.lang == languages.get(selectedLanguage).id" 
+           class="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] group cursor-pointer"
+           (click)="redirectToLessons(course.id)">
+        <div class="relative aspect-video">
+          <img *ngIf="course.image" [src]="getURL(course.image)" 
+               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
+               alt="Course Image" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <h2 class="absolute bottom-4 left-4 right-4 text-white text-2xl font-bold leading-tight">{{ course.title }}</h2>
+          <button (click)="showCertificateModal(course); $event.stopPropagation();" 
+                  class="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2 shadow-md hover:bg-white/40 transition-colors duration-200">
+            <i class="fas fa-certificate text-yellow-400 text-xl"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div class="grid grid-cols-4 gap-2">
+            <span *ngFor="let audience of (course.targetAudience || []).slice(0, 4)" 
+                  class="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full text-center truncate">
+              {{ audience }}
+            </span>
+          </div>
+          <p class="text-sm text-gray-600">
+            <span class="font-medium text-gray-900">Description: </span>
+            {{ trimText(course.description, 15) }}
+          </p>
+          <p class="text-sm text-gray-600">
+            <span class="font-medium text-gray-900">Objectives: </span>
+            {{ trimText(course.objectives, 10) }}
+          </p>
+          <div class="pt-4 flex justify-between items-center space-x-4">
+            <button (click)="openEdit(course); $event.stopPropagation();" 
+                    class="flex-1 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] hover:bg-gradient-to-l text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md hover:transition hover:duration-300 hover:shadow-lg">
+              Edit Course
+            </button>
+            <p-button severity="danger" (click)="removeCourse(course.id); $event.stopPropagation();" 
+                   outlined="true">
+              <i class="fas fa-trash-alt"></i>
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</p-card>
+</body> 

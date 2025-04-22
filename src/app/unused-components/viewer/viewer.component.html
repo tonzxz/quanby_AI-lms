@@ -1,0 +1,99 @@
+<div class="fixed inset-0 z-50 flex flex-col p-4 bg-gray-900">
+  <!-- Header -->
+  <div class="flex items-center justify-between px-4 py-2 text-white ">
+    <h2 class="text-xl font-semibold truncate">{{ getFileName() }}</h2>
+    <button (click)="close()" class="text-white hover:text-gray-300 focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="relative flex-grow my-4 overflow-hidden bg-white rounded-b-lg">
+    <!-- Video Element for Interactive Content -->
+    <video
+      #videoPlayer
+      *ngIf="isVideoFile()"
+      [src]="link"
+      class="object-contain w-full h-full"
+      controls
+      (timeupdate)="checkTimestamp(videoPlayer)"
+    ></video>
+
+    <!-- PowerPoint Viewer -->
+    <ngx-doc-viewer
+    *ngIf="isPowerPointFile()"
+    [url]="link"
+    viewer="google"
+    style="width: 100%; height: 100%;"
+  ></ngx-doc-viewer>
+  
+    <!-- Word Document Viewer -->
+    <ngx-doc-viewer
+      *ngIf="isDocFile()"
+      [url]="link"
+      viewer="google"
+      style="width: 100%; height: 100%;"
+    ></ngx-doc-viewer>
+        
+          <!-- Excel Viewer -->
+      <ngx-doc-viewer
+      *ngIf="isExcelFile()"
+      [url]="link"
+      viewer="google"
+      style="width: 100%; height: 100%;"
+      ></ngx-doc-viewer>
+
+      <!-- Text File Viewer -->
+      <ngx-doc-viewer
+      *ngIf="isTextFile()"
+      [url]="link"
+      viewer="google"
+      style="width: 100%; height: 100%;"
+      ></ngx-doc-viewer>
+
+      <!-- HTML Viewer -->
+      <ngx-doc-viewer
+      *ngIf="isHtmlFile()"
+      [url]="link"
+      viewer="google"
+      style="width: 100%; height: 100%;"
+      ></ngx-doc-viewer>
+
+
+
+    <!-- PDF and other supported files -->
+    <iframe
+      *ngIf="isPdfFile() || isOtherSupportedFile()"
+      [src]="link | safe"
+      class="w-full h-full"
+    ></iframe>
+
+    <!-- Image viewer -->
+    <img
+      *ngIf="isImageFile()"
+      [src]="link | safe"
+      class="object-contain w-full h-full"
+      alt="Image preview"
+      (error)="handleImageError($event)"
+    >
+
+    <!-- Unsupported file type message -->
+    <div *ngIf="isUnsupportedFile()" class="flex items-center justify-center w-full h-full text-gray-700">
+      <p>This file type is not supported for preview. Please download to view.</p>
+    </div>
+
+    <!-- Countdown Display -->
+    <div *ngIf="showCountdown" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <p class="text-5xl font-bold text-white">{{ countdown }}</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="flex justify-end px-4 py-2 text-white ">
+    <button (click)="downloadFile()" class="px-4 py-2 font-bold text-white bg-[#00cc99] rounded hover:bg-[#00a77d]">
+      Download 
+    </button>
+  </div>
+</div>
