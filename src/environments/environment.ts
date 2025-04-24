@@ -41,7 +41,7 @@
   ],
   appTitle: 'Quanby Learning Management System',
   appShortTitle: 'Quanby LMS',
-  appPhrase:'Empowering Animation Through Innovative Online Learning',
+  appPhrase:'Empowering Growth Through Innovative Online Learning',
   welcomeText: 'Welcome! Learning starts here',
   appLogo:'assets/login/quanby.png',
   light:{
