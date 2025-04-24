@@ -1,278 +1,209 @@
 <div class="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
   <div class="max-w-7xl mx-auto space-y-8">
-    <!-- Broadcast Section -->
-    <div class="relative bg-white shadow-xl rounded-2xl p-6 sm:p-8 transition-all duration-300">
-      <!-- Broadcast Header -->
-      <div class="absolute -top-6 left-6 sm:left-8 bg-white shadow-lg rounded-xl px-4 sm:px-6 py-2 sm:py-3 flex items-center">
-        <svg viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" width="24" height="24" class="mr-2 sm:mr-3">
+
+    <!-- ═══════════════════ BROADCAST ═══════════════════ -->
+    <div class="relative bg-white shadow-xl rounded-2xl p-6 sm:p-8">
+      <!-- Header -->
+      <div
+        class="absolute -top-6 left-6 sm:left-8 bg-white shadow-lg rounded-xl
+               px-4 sm:px-6 py-2 sm:py-3 flex items-center">
+        <svg viewBox="0 0 48 48" width="24" height="24" fill="none"
+             class="mr-2 sm:mr-3">
           <defs>
-            <radialGradient id="redGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-              <stop offset="0%" style="stop-color: var(--tertiary-color); stop-opacity: 1" />
-              <stop offset="100%" style="stop-color: var(--tertiary-color); stop-opacity: 0" />
+            <radialGradient id="redGradient" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="var(--tertiary-color)" />
+              <stop offset="100%" stop-color="var(--tertiary-color)" stop-opacity="0"/>
             </radialGradient>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color: var(--secondary-color); stop-opacity: 1" />
-              <stop offset="100%" style="stop-color: var(--secondary-color); stop-opacity: 1" />
+              <stop offset="0%"  stop-color="var(--secondary-color)" />
+              <stop offset="100%" stop-color="var(--secondary-color)" />
             </linearGradient>
           </defs>
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-          <g id="SVGRepo_iconCarrier">
-            <title>broadcast</title>
-            <desc>Created with Sketch.</desc>
-            <g id="broadcast" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
-              <g id="编组" transform="translate(4.000000, 10.000000)">
-                <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect>
-                <ellipse id="Oval" fill="url(#redGradient)" fill-rule="nonzero" cx="20" cy="14.0979414" rx="4.54545455" ry="4.53125" stroke="none"></ellipse>
-                <path d="M12,5 C6.66666667,9.97056275 6.66666667,18.0294373 12,23 M28,23 C33.3333333,18.0294373 33.3333333,9.97056275 28,5" id="Oval-2" stroke-linecap="round" stroke="url(#gradient)" stroke-width="4"></path>
-                <path d="M5.85786438,1.59872116e-14 C-1.95262146,7.78607807 -1.95262146,20.4098048 5.85786438,28.1958829 M34.1421356,28.1958829 C41.9526215,20.4098048 41.9526215,7.78607807 34.1421356,1.24344979e-14" id="Oval-3" stroke-linecap="round" stroke="url(#gradient)" stroke-width="4"></path>
-              </g>
-            </g>
-          </g>
+          <ellipse cx="20" cy="14" rx="4.5" ry="4.5" fill="url(#redGradient)"/>
+          <path d="M12 5C6.7 10 6.7 18 12 23M28 23C33.3 18 33.3 10 28 5"
+                stroke="url(#gradient)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M5.9 0C-2 7.8-2 20.4 5.9 28.2M34.1 28.2C42 20.4 42 7.8 34.1 0"
+                stroke="url(#gradient)" stroke-width="4" stroke-linecap="round"/>
         </svg>
-        <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--primary-color)] bg-clip-text text-transparent">BROADCAST NOW!</span>
+        <span
+          class="text-lg sm:text-xl font-bold bg-gradient-to-r
+                 from-[var(--secondary-color)] to-[var(--primary-color)]
+                 bg-clip-text text-transparent">
+          BROADCAST&nbsp;NOW!
+        </span>
       </div>
 
-      <!-- Broadcast Form -->
-      <div class="pt-10 space-y-5 sm:space-y-6">
+      <!-- Form -->
+      <div class="pt-10 space-y-6">
+
         <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
           <!-- Class Dropdown -->
-          <div ngbDropdown class="w-full sm:w-1/3">
-            <button ngbDropdownToggle class="w-full bg-[var(--secondary-color)] text-white rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium flex items-center justify-between hover:bg-[var(--primary-color)] transition-all duration-300">
-              <span>Class: {{ classToBroadcast == null ? 'Select Class' : classToBroadcast.class }}</span>
+          <div ngbDropdown class="w-full sm:w-1/2">
+            <button ngbDropdownToggle
+              class="w-full bg-[var(--secondary-color)] text-white rounded-xl
+                     px-5 py-3 text-sm font-medium flex items-center justify-between
+                     hover:bg-[var(--primary-color)]">
+              <span>Class: {{ broadcastClassLabel }}</span>
               <img src="assets/teacher/icondown.png" class="w-5 h-4" />
             </button>
-            <div *ngIf="classes.length" ngbDropdownMenu class="bg-white shadow-xl rounded-xl mt-2 w-full max-h-60 overflow-y-auto">
-              <button (click)="setBroadcastClass(class)" *ngFor="let class of classes" ngbDropdownItem class="px-4 sm:px-5 py-2 sm:py-3 hover:bg-gray-100 text-gray-800 font-medium">
-                <b>{{ class.course }}</b> {{ class.class }}
+            <div *ngIf="classes.length" ngbDropdownMenu
+                 class="bg-white shadow-xl rounded-xl mt-2 w-full max-h-60 overflow-y-auto">
+              <button *ngFor="let c of classes"
+                      (click)="setBroadcastClass(c)"
+                      ngbDropdownItem
+                      class="px-5 py-3 hover:bg-gray-100 w-full text-left font-medium">
+                <b>{{ c.course }}</b> {{ c.class }}
               </button>
             </div>
           </div>
 
           <!-- Type Dropdown -->
-          <div ngbDropdown class="w-full sm:w-1/3">
-            <button ngbDropdownToggle class="w-full bg-[var(--secondary-color)] text-white rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium flex items-center justify-between hover:bg-[var(--primary-color)] transition-all duration-300">
+          <div ngbDropdown class="w-full sm:w-1/2">
+            <button ngbDropdownToggle
+              class="w-full bg-[var(--secondary-color)] text-white rounded-xl
+                     px-5 py-3 text-sm font-medium flex items-center justify-between
+                     hover:bg-[var(--primary-color)]">
               <span>Type: {{ broadcastType }}</span>
               <img src="assets/teacher/icondown.png" class="w-5 h-4" />
             </button>
-            <div *ngIf="comtypes.length" ngbDropdownMenu class="bg-white shadow-xl rounded-xl mt-2 w-full">
-              <button (click)="setBroadcastType(type)" *ngFor="let type of comtypes" ngbDropdownItem class="px-4 sm:px-5 py-2 sm:py-3 hover:bg-gray-100 text-gray-800 font-medium">
-                {{ type }}
+            <div *ngIf="comtypes.length" ngbDropdownMenu
+                 class="bg-white shadow-xl rounded-xl mt-2 w-full">
+              <button *ngFor="let t of comtypes"
+                      (click)="setBroadcastType(t)"
+                      ngbDropdownItem
+                      class="px-5 py-3 hover:bg-gray-100 w-full text-left font-medium">
+                {{ t }}
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Broadcast Description Input -->
-        <input [(ngModel)]="broadcast" type="text" class="w-full bg-gray-100 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] placeholder-gray-500 font-medium transition-all duration-300" placeholder="Broadcast Description :" />
+        <!-- Broadcast description -->
+        <input [(ngModel)]="broadcast"
+               class="w-full bg-gray-100 rounded-xl px-5 py-4 text-sm
+                      focus:ring-2 focus:ring-[var(--primary-color)]"
+               placeholder="Broadcast Description :" />
 
-        <!-- File Upload -->
-        <label class="w-full bg-gray-100 rounded-xl px-4 sm:px-5 py-6 sm:py-8 text-center cursor-pointer relative flex items-center justify-center border-2 border-dashed border-gray-300 hover:border-[var(--primary-color)] transition-all duration-300">
-          <span class="text-gray-600 font-medium">{{ broadcastContent == null ? 'Click to browse audio files' : getBroadcastFilename() }}</span>
-          <input type="file" class="absolute inset-0 opacity-0 cursor-pointer" accept="audio/*" (change)="handleFileSelect($event)" />
-        </label>
+        <!-- File upload -->
+        <div class="w-full">
+          <input id="broadcastFile"
+                 type="file"
+                 accept="audio/*"
+                 class="hidden"
+                 (change)="handleFileSelect($event)" />
+          <label for="broadcastFile"
+                 class="w-full bg-gray-100 rounded-xl px-5 py-8 flex items-center
+                        justify-center text-center cursor-pointer border-2 border-dashed
+                        border-gray-300 hover:border-[var(--primary-color)]">
+            <span class="text-gray-600 font-medium">
+              {{ broadcastContent ? getBroadcastFilename()
+                                  : 'Click to browse audio files' }}
+            </span>
+          </label>
+        </div>
 
-        <!-- Broadcast Button -->
-        <button (click)="sendBroadcast()" class="w-full sm:w-40 mx-auto block bg-[var(--secondary-color)] text-white font-semibold rounded-xl px-4 sm:px-6 py-3 sm:py-4 hover:bg-[var(--primary-color)] transition-all duration-300">
+        <!-- Submit -->
+        <button (click)="sendBroadcast()"
+                class="w-full sm:w-40 mx-auto block bg-[var(--secondary-color)]
+                       text-white font-semibold rounded-xl px-6 py-4
+                       hover:bg-[var(--primary-color)]">
           Broadcast
         </button>
       </div>
     </div>
 
-    <!-- Chat and Alert Section -->
+    <!-- ═════════ ALERT (chat removed) ═════════ -->
     <div class="flex flex-col lg:flex-row lg:space-x-8 space-y-8 lg:space-y-0">
-      <!-- Chat Section -->
-      <div class="lg:w-2/3 w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8 transition-all duration-300">
-        <h2 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--primary-color)] bg-clip-text text-transparent mb-6 sm:mb-8 text-center">Chat</h2>
 
-        <!-- Chat Page 1 (Chat List) -->
-        <div *ngIf="showPage1" class="space-y-5 sm:space-y-6 h-[400px] sm:h-[450px] overflow-y-auto">
-          <!-- Search Bar -->
-          <div class="flex items-center bg-gray-100 rounded-xl p-2 sm:p-3">
-            <input [(ngModel)]="search" (keyup)="searchPeople($event)" [disabled]="listen" class="flex-1 bg-transparent border-none px-3 sm:px-4 py-2 sm:py-3 text-sm focus:outline-none placeholder-gray-500 font-medium" placeholder="Search" />
-            <button class="bg-[var(--secondary-color)] text-white rounded-xl p-2 sm:p-3 hover:bg-[var(--primary-color)] transition-all duration-300">
-              <img src="assets/search.png" alt="Search Icon" class="w-5 h-5" />
-            </button>
-          </div>
-
-          <!-- Chat List -->
-          <ng-container *ngIf="!searching; else searchingPeople">
-            <ng-container *ngIf="people.length; else showConvos">
-              <button *ngFor="let person of people" (click)="openChatModal(person)" class="flex items-center space-x-4 p-3 sm:p-4 hover:bg-gray-50 rounded-xl transition-all duration-300 w-full">
-                <img [src]="getUrl(person.profile)" alt="Profile Picture" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full border-2 border-gray-200" />
-                <div class="flex-1 text-left">
-                  <p class="font-semibold text-sm sm:text-base">{{ person.firstname + ' ' + person.lastname }}</p>
-                  <p class="text-sm text-gray-500">{{ person.lastseen == 'Just now' ? 'Online' : 'Last seen ' + person.lastseen }}</p>
-                </div>
-              </button>
-            </ng-container>
-            <ng-template #showConvos>
-              <ng-container *ngIf="getConvos().length; else empty">
-                <button *ngFor="let person of getConvos()" (click)="openChatModal(person)" class="flex items-center space-x-4 p-3 sm:p-4 hover:bg-gray-50 rounded-xl transition-all duration-300 w-full">
-                  <img [src]="getUrl(person.profile)" alt="Profile Image" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full border-2 border-gray-200" />
-                  <div class="flex-1 text-left">
-                    <p class="font-semibold text-sm sm:text-base">{{ person.firstname + ' ' + person.lastname }}</p>
-                    <p class="text-sm text-gray-500">{{ person.lastmessage }}</p>
-                  </div>
-                </button>
-              </ng-container>
-              <ng-template #empty>
-                <div class="flex flex-col items-center justify-center h-32 sm:h-40 border-2 border-dashed border-gray-300 rounded-xl">
-                  <span class="text-gray-600 font-medium">No Inbox</span>
-                  <span class="text-gray-500 text-sm">Start a conversation!</span>
-                </div>
-              </ng-template>
-            </ng-template>
-          </ng-container>
-          <ng-template #searchingPeople>
-            <div class="flex items-center justify-center h-32 sm:h-40">
-              <span class="text-gray-600 font-medium">Searching for people...</span>
-            </div>
-          </ng-template>
-        </div>
-
-        <!-- Chat Page 2 (Chat Conversation) -->
-        <div *ngIf="!showPage1" class="space-y-5 sm:space-y-6 h-[400px] sm:h-[450px] flex flex-col">
-          <!-- Chat Header -->
-          <div class="flex items-center justify-between">
-            <button (click)="togglePages()" class="text-gray-600 hover:text-[var(--primary-color)] transition-all duration-300">
-              <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15 6L5 16L15 26" stroke="#464646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7 16H27" stroke="#464646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="flex-1 text-center">
-              <p class="font-semibold text-sm sm:text-base">Boss Ken</p>
-              <p class="text-sm text-green-500">online</p>
-            </div>
-            <img src="assets/tonzxz.jpg" alt="Profile Image" class="w-10 sm:w-12 h-10 sm:h-12 rounded-full border-2 border-gray-200" />
-          </div>
-          <hr class="my-3 sm:my-4 border-gray-200" />
-
-          <!-- Chat Messages -->
-          <div class="flex-1 overflow-y-auto space-y-4 p-4 sm:p-5">
-            <div class="bg-blue-100 text-gray-700 p-3 sm:p-4 rounded-xl max-w-xs sm:max-w-sm">
-              Chat Bubble 1
-            </div>
-            <div class="bg-[var(--secondary-color)] text-white p-3 sm:p-4 rounded-xl max-w-xs sm:max-w-sm ml-auto hover:bg-[var(--primary-color)] transition-all duration-300">
-              Chat Bubble 2
-            </div>
-          </div>
-
-          <!-- Chat Input -->
-          <div class="flex items-center bg-gray-100 rounded-xl p-2 sm:p-3 mt-4 sm:mt-6">
-            <svg width="24" height="24" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-2 sm:ml-3">
-              <path d="M17.8125 11.25V16.875C17.8125 18.4283 16.5533 19.6875 15 19.6875C13.4467 19.6875 12.1875 18.4283 12.1875 16.875V9.375C12.1875 6.78617 14.2862 4.6875 16.875 4.6875C19.4638 4.6875 21.5625 6.78617 21.5625 9.375V18.75C21.5625 22.3744 18.6244 25.3125 15 25.3125C11.3756 25.3125 8.4375 22.3744 8.4375 18.75L8.4375 11.25V11.25" stroke="url(#paint0_linear_622_1148)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <defs>
-                <linearGradient id="paint0_linear_622_1148" x1="15" y1="4.6875" x2="15" y2="25.3125" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#0477AF"/>
-                  <stop offset="1" stop-color="#6BF3BC"/>
-                </linearGradient>
-              </defs>
-            </svg>
-            <input class="flex-1 bg-transparent border-none px-3 sm:px-4 py-2 sm:py-3 text-sm focus:outline-none placeholder-gray-500 font-medium" type="text" placeholder="Write Something..." />
-            <button class="bg-[var(--secondary-color)] text-white rounded-xl px-4 sm:px-6 py-2 sm:py-3 hover:bg-[var(--primary-color)] transition-all duration-300">
-              Send
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Alert Section -->
-      <div class="lg:w-1/3 w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8 relative transition-all duration-300">
-        <!-- Alert Header -->
-        <div class="absolute -top-6 left-6 sm:left-8 bg-white shadow-lg rounded-xl px-4 sm:px-6 py-2 sm:py-3 flex items-center">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="mr-2 sm:mr-3">
-            <rect width="24" height="24" fill="white"></rect>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888Z" fill="url(#gradient)"></path>
+      <!-- Alert Card -->
+      <div class="lg:flex-1 w-full bg-white shadow-xl rounded-2xl p-6 sm:p-8 relative">
+        <!-- Header -->
+        <div
+          class="absolute -top-6 left-6 sm:left-8 bg-white shadow-lg rounded-xl
+                 px-4 sm:px-6 py-2 sm:py-3 flex items-center">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+               xmlns="http://www.w3.org/2000/svg" class="mr-2 sm:mr-3">
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"  stop-color="var(--secondary-color)"/>
+              <stop offset="100%" stop-color="var(--primary-color)"/>
+            </linearGradient>
+            <path d="M2 12a10 10 0 1020 0 10 10 0 10-20 0zm9-4v5m0 3h.01"
+                  stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
           </svg>
-          <span class="text-lg sm:text-xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--primary-color)] bg-clip-text text-transparent">Send Alert!</span>
+          <span
+            class="text-lg sm:text-xl font-bold bg-gradient-to-r
+                   from-[var(--secondary-color)] to-[var(--primary-color)]
+                   bg-clip-text text-transparent">
+            Send Alert!
+          </span>
         </div>
 
-        <!-- Alert Form -->
-        <div class="pt-10 space-y-5 sm:space-y-6">
+        <!-- Form -->
+        <div class="pt-10 space-y-6">
+
           <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-            <!-- Class Dropdown -->
+            <!-- Class -->
             <div ngbDropdown class="w-full sm:w-1/2">
-              <button ngbDropdownToggle class="w-full bg-[var(--secondary-color)] text-white rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium flex items-center justify-between hover:bg-[var(--primary-color)] transition-all duration-300">
-                <span>Class: {{ classToAlert == null ? 'Select Class' : classToAlert.class }}</span>
+              <button ngbDropdownToggle
+                class="w-full bg-[var(--secondary-color)] text-white rounded-xl
+                       px-5 py-3 text-sm font-medium flex items-center justify-between
+                       hover:bg-[var(--primary-color)]">
+                <span>Class: {{ alertClassLabel }}</span>
                 <img src="assets/teacher/icondown.png" class="w-5 h-4" />
               </button>
-              <div *ngIf="classes.length" ngbDropdownMenu class="bg-white shadow-xl rounded-xl mt-2 w-full max-h-60 overflow-y-auto">
-                <button (click)="setAlertClass(class)" *ngFor="let class of classes" ngbDropdownItem class="px-4 sm:px-5 py-2 sm:py-3 hover:bg-gray-100 text-gray-800 font-medium">
-                  <b>{{ class.course }}</b> {{ class.class }}
+              <div *ngIf="classes.length" ngbDropdownMenu
+                   class="bg-white shadow-xl rounded-xl mt-2 w-full max-h-60 overflow-y-auto">
+                <button *ngFor="let c of classes"
+                        (click)="setAlertClass(c)"
+                        ngbDropdownItem
+                        class="px-5 py-3 hover:bg-gray-100 w-full text-left font-medium">
+                  <b>{{ c.course }}</b> {{ c.class }}
                 </button>
               </div>
             </div>
 
-            <!-- Type Dropdown -->
+            <!-- Type -->
             <div ngbDropdown class="w-full sm:w-1/2">
-              <button ngbDropdownToggle class="w-full bg-[var(--secondary-color)] text-white rounded-xl px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium flex items-center justify-between hover:bg-[var(--primary-color)] transition-all duration-300">
+              <button ngbDropdownToggle
+                class="w-full bg-[var(--secondary-color)] text-white rounded-xl
+                       px-5 py-3 text-sm font-medium flex items-center justify-between
+                       hover:bg-[var(--primary-color)]">
                 <span>Type: {{ alertType }}</span>
                 <img src="assets/teacher/icondown.png" class="w-5 h-4" />
               </button>
-              <div *ngIf="comtypes.length" ngbDropdownMenu class="bg-white shadow-xl rounded-xl mt-2 w-full">
-                <button (click)="setAlertType(type)" *ngFor="let type of comtypes" ngbDropdownItem class="px-4 sm:px-5 py-2 sm:py-3 hover:bg-gray-100 text-gray-800 font-medium">
-                  {{ type }}
+              <div *ngIf="comtypes.length" ngbDropdownMenu
+                   class="bg-white shadow-xl rounded-xl mt-2 w-full">
+                <button *ngFor="let t of comtypes"
+                        (click)="setAlertType(t)"
+                        ngbDropdownItem
+                        class="px-5 py-3 hover:bg-gray-100 w-full text-left font-medium">
+                  {{ t }}
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Alert Description Input -->
-          <input [(ngModel)]="alertDesc" type="text" class="w-full bg-gray-100 rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] placeholder-gray-500 font-medium transition-all duration-300" placeholder="Alert Description :" />
+          <input [(ngModel)]="alertDesc"
+                 class="w-full bg-gray-100 rounded-xl px-5 py-4 text-sm
+                        focus:ring-2 focus:ring-[var(--primary-color)]"
+                 placeholder="Alert Description :" />
 
-          <!-- Alert Message Input -->
-          <input [(ngModel)]="alertMessage" type="text" class="w-full bg-gray-100 rounded-xl px-4 sm:px-5 py-3 sm:py-4 h-24 sm:h-28 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] placeholder-gray-500 font-medium transition-all duration-300" placeholder="Alert Message :" />
+          <textarea [(ngModel)]="alertMessage"
+                    class="w-full bg-gray-100 rounded-xl px-5 py-4 h-28 text-sm
+                           focus:ring-2 focus:ring-[var(--primary-color)] resize-none"
+                    placeholder="Alert Message :"></textarea>
 
-          <!-- Send Alert Button -->
-          <button (click)="sendAlert()" class="w-full sm:w-40 mx-auto block bg-red-500 text-white font-semibold rounded-xl px-4 sm:px-6 py-3 sm:py-4 hover:bg-red-600 transition-all duration-300">
+          <button (click)="sendAlert()"
+                  class="w-full sm:w-40 mx-auto block bg-red-500 text-white font-semibold
+                         rounded-xl px-6 py-4 hover:bg-red-600">
             Send Alert
           </button>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Chat Modal -->
-  <div *ngIf="chatShowModal" [@fadeInOut] class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 sm:p-0">
-    <div class="bg-white rounded-2xl w-full sm:w-3/4 md:w-1/2 lg:w-1/3 h-[80vh] sm:h-[85vh] flex flex-col shadow-2xl">
-      <!-- Modal Header -->
-      <header class="flex items-center justify-between p-4 sm:p-5 border-b border-gray-200">
-        <button (click)="closeChatModal()" class="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-300">
-          <i class="fas fa-arrow-left text-lg sm:text-xl"></i>
-        </button>
-        <h1 class="text-lg sm:text-xl font-semibold flex-1 text-center text-gray-800">{{ chat.firstname + ' ' + chat.lastname }}</h1>
-        <button (click)="closeModals()" class="text-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-300">
-          <i class="fas fa-close text-lg sm:text-xl"></i>
-        </button>
-      </header>
-
-      <!-- Modal Body -->
-      <main class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 sm:space-y-5">
-        <div class="flex flex-col">
-          <ng-container *ngFor="let message of getMessages()">
-            <div *ngIf="user.id == message.senderid; else notMe" class="bg-[var(--secondary-color)] text-white p-3 sm:p-4 rounded-xl max-w-[70%] sm:max-w-[60%] self-end hover:bg-[var(--primary-color)] transition-all duration-300">
-              <h1 class="text-sm sm:text-base">{{ message.message }}</h1>
-            </div>
-            <ng-template #notMe>
-              <div class="bg-gray-200 text-gray-800 p-3 sm:p-4 rounded-xl max-w-[70%] sm:max-w-[60%] self-start">
-                <h1 class="text-sm sm:text-base">{{ message.message }}</h1>
-              </div>
-            </ng-template>
-          </ng-container>
-        </div>
-      </main>
-
-      <!-- Modal Footer -->
-      <footer class="p-4 sm:p-5">
-        <div class="flex items-center bg-gray-100 rounded-xl p-2 sm:p-3">
-          <input #messageInput [(ngModel)]="message" type="text" placeholder="Type your message..." class="flex-1 bg-transparent border-none px-3 sm:px-4 py-2 sm:py-3 text-sm focus:outline-none placeholder-gray-500 font-medium" />
-          <button (click)="chat.anonymous ? sendMessageAnonymous() : sendMessage()" class="text-[var(--secondary-color)] hover:text-[var(--primary-color)] px-3 sm:px-4 transition-all duration-300">
-            <i class="fa-solid fa-paper-plane text-lg sm:text-xl"></i>
-          </button>
-        </div>
-      </footer>
+      <!-- CHAT SECTION & MODAL REMAIN COMMENTED
+      … -->
     </div>
   </div>
 </div>

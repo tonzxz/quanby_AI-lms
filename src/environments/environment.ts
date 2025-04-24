@@ -35,9 +35,9 @@
   maintenance: false,
 
   exclude: [
-    // 'SPEECHLAB',
+    'SPEECHLAB',
     'PERFORMANCE',
-    // 'COMMUNICATION'
+    'COMMUNICATION'
   ],
   appTitle: 'Quanby Learning Management System',
   appShortTitle: 'Quanby LMS',
