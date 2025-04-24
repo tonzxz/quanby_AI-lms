@@ -157,6 +157,14 @@
         <i class="fa-solid {{isDarkModeEnabled() ? 'fa-moon text-primary-900':'fa-sun text-yellow-500'}}  text-lg"></i>
       </button> -->
       <!-- Notification Icon -->
+      <!-- Messages Icon -->
+    <button
+  class="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-primary-100"
+  (click)="openMessagesModal()">
+  <i class="fas fa-envelope text-primary-900 text-lg"></i>
+</button>
+
+
       <button
         class="relative flex items-center justify-center w-9 h-9 rounded-full hover:bg-primary-100"
         (click)="toggleNotificationBox()"
@@ -185,3 +193,7 @@
   *ngIf="showNotificationBox"
   [notifications]="notifications"
 ></app-notificationbox>
+
+
+<!-- Messages modal host -->
+<app-messages #msg></app-messages>

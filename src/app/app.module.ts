@@ -1,4 +1,4 @@
-import { NgModule, importProvidersFrom } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 // import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
@@ -225,6 +225,7 @@ import { FlashcardsComponent } from './components/student/flashcards/flashcards.
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessagesComponent } from "./shared/components/messages/messages.component";
 
 
 export function playerFactory() {
@@ -342,25 +343,24 @@ export function playerFactory() {
   bootstrap: [AppComponent], imports: [
     MatPaginatorModule,
     StyleClassModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatSnackBarModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        NgbModule,
-        FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     MatDialogModule,
-        ButtonModule,
-        NgxChartsModule,
-        MatIconModule,
-        BrowserAnimationsModule,
-        DragDropModule,
-        PdfViewerModule,
+    NgbModule,
+    FormsModule,
+    MatDialogModule,
+    ButtonModule,
+    NgxChartsModule,
+    MatIconModule,
+    BrowserAnimationsModule,
+    DragDropModule,
+    PdfViewerModule,
     NgxDocViewerModule,
-
     CardModule,
     TableModule,
     TextareaModule,
@@ -392,9 +392,12 @@ export function playerFactory() {
     InputGroupAddonModule,
     CommonModule,
     ReactiveFormsModule,
-  
-        ClickOutsideDirective,
-  ], providers: [
+    ClickOutsideDirective,
+    MessagesComponent
+  ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
+  providers: [
     provideAnimationsAsync(),
     providePrimeNG({
         theme: {

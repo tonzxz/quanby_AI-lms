@@ -3,200 +3,213 @@
   <i class="fas fa-comment"></i>
 </button>
 
-<!-- Modal -->
-<div *ngIf="showModal" [@fadeInOut] class="modal-overlayzz">
-  <div class="flex flex-col w-4/5 modal-contentzz h-3/4 lg:w-1/4">
 
-    <header class="flex items-center justify-between px-4 py-3 text-gray-700 lg:py-4">
+<!-- ========================== INBOX / PEOPLE LIST MODAL ========================== -->
+<div *ngIf="showModal"
+     [@fadeInOut]
+     class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
 
-      <h1 class="flex-1 text-xl font-semibold text-center">MESSAGES</h1>
-      <button (click)="closeModal()" class="text-[var(--tertiary-color)] focus:outline-none">
-        <i class="text-transparent fas fa-close gradient-color bg-clip-text "></i>
+  <div class="relative w-full max-w-md sm:max-w-lg h-[85vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between px-6 py-4 border-b">
+      <h2 class="text-lg font-semibold text-gray-800">Messages</h2>
+      <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600 transition">
+        <i class="fas fa-times text-xl"></i>
       </button>
     </header>
 
+    <!-- <div class="p-4 space-y-2">
+      <div class="relative">
+        <input id="person_search"
+               [(ngModel)]="search"
+               (keyup)="searchPeople($event)"
+               [disabled]="listen"
+               placeholder="Search people or interests…"
+               class="w-full pl-10 pr-4 py-2 text-sm rounded-lg bg-gray-100
+                      focus:ring-2 focus:ring-[var(--tertiary-color)] outline-none" />
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
 
-    <div class="linya"> </div>
+      <div class="flex flex-wrap gap-2" *ngIf="interests.length">
+        <span *ngFor="let tag of interests; let i = index"
+              (click)="deleteInterst(i)"
+              class="select-none cursor-pointer px-2 py-1 rounded-full text-xs
+                     bg-[var(--primary-color)]/10 text-[var(--primary-color)]
+                     hover:bg-[var(--primary-color)]/20">
+          {{ tag }}
+          <i class="fas fa-times ml-1 text-[10px]"></i>
+        </span>
+      </div>
+    </div> -->
 
-    <main class="flex-1 p-4 overflow-y-scroll">
+    <!-- Search -------------------------------------------------------------->
+<div class="p-4">
+  <div class="relative">
+    <!-- input -->
+    <input
+      id="person_search"
+      [(ngModel)]="search"
+      (keyup)="searchPeople($event)"
+      placeholder="Search people…"
+      class="w-full pl-10 pr-4 py-2 text-sm rounded-lg bg-gray-100
+             focus:ring-2 focus:ring-[var(--tertiary-color)] outline-none" />
 
-      <div class="flex flex-col ">
+    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+      <i class="fas fa-search"></i>
+    </span>
 
-        <label for="person_search">Search {{interests.length? 'Interest':'People'}}: </label>
-        <div *ngIf="interests.length" class="flex-grow">
-          <p class="leading-9">
-            <span (click)="deleteInterst(i)" class="select-none cursor-pointer px-2 py-1 rounded-md ml-2"
-              *ngFor="let interest of interests; let i = index">
-              {{interest}}
-            </span>
-          </p>
-        </div>
-        <input [disabled]="listen" [(ngModel)]="search" (keyup)="searchPeople($event)" id="person_search" type="text"
-          placeholder="Type someone..."
-          class="mb-2 px-3 py-2 rounded-md outline-none border-solid border-b-2 focus-within:!border-[var(--tertiary-color)] transition-all border-[var(--tertiary-color)]">
+    <!-- dropdown suggestions -->
+    <ul *ngIf="people.length && search.trim()"
+        class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md
+               max-h-60 overflow-y-auto">
+      <li *ngFor="let p of people"
+          (click)="openChatModal(p)"
+          class="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100">
+        <img [src]="getUrl(p.profile)" class="w-8 h-8 rounded-full object-cover" />
+        <span class="text-sm text-gray-700 truncate flex-1">
+          {{ p.firstname }} {{ p.lastname }}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
 
-        <!-- ken ini su mga pandok kang teacher -->
-        <ng-container *ngIf="!searching; else searchingPeople ">
-          <ng-container *ngIf="people.length && !interests.length; else showConvos">
-            <button *ngFor="let person of people" (click)="openChatModal(person)"
-              class="flex mb-4 items-center bg-[var(--primary-color)] hover:!bg-[var(--secondary-color)] rounded-2xl p-2 ">
-              <img src="{{getUrl(person.profile)}}" alt="Profile Picture" class="w-10 h-10 mt-1 ml-2 mr-4 rounded-full">
-              <div class="flex-grow">
-                <div class="flex justify-between mx-1 overflow-x-auto ">
-                  <div>
-                    <p class="font-medium text-[var(--tertiary-color)] text-md">{{person.firstname + ' '+
-                      person.lastname}}</p>
-                  </div>
 
-                </div>
+    <!-- Scroll-able list -->
+    <div class="flex-1 overflow-y-auto px-1 space-y-1">
 
-                <div class="w-full px-1 font-light text-left text-white text-md">{{person.lastseen == 'Just now' ?
-                  'Online' : 'Last seen ' + person.lastseen}}</div>
-              </div>
-            </button>
-          </ng-container>
-          <ng-template #showConvos>
-            <ng-container *ngIf="interests.length; else justConvos">
-              <ng-container *ngIf="!listen; else listening">
-                <button (click)="searchByInterest()"
-                  class="flex mb-4 justify-center text-white font-bold items-center bg-[var(--primary-color)] hover:!bg-[var(--secondary-color)] rounded-2xl p-2">
-                  Start Conversation
-                </button>
-              </ng-container>
-              <ng-template #listening>
-                <div class="flex flex-col items-center justify-center w-full h-32 rounded-md mt-">
-                  <span>Searching for people with same interest ... </span>
-                </div>
-                <button (click)="cancelListen()"
-                  class="flex mb-4 justify-center text-white font-bold items-center bg-[var(--primary-color)] hover:!bg-[var(--secondary-color)] rounded-2xl p-2">
-                  Cancel
-                </button>
-              </ng-template>
-            </ng-container>
-            <ng-template #justConvos>
-              <ng-container *ngIf="getConvos().length; else empty">
-                <button *ngFor="let person of getConvos()" (click)="openChatModal(person)" [ngClass]="{'opacity-85':person.lastmessageref.status == 'seen',
-              '!bg-slate-600':person.lastmessageref.status == 'seen' || person.lastmessageref.senderid == user.id,
-              'hover:!bg-slate-700':person.lastmessageref.status == 'seen' || person.lastmessageref.senderid == user.id,
-              'hover:!bg-[var(--tertiary-color)] ':person.lastmessageref.status != 'seen' && person.lastmessageref.senderid != user.id
+      <!-- —— SEARCH RESULTS —— -->
+      <ng-container *ngIf="people.length && !interests.length; else conversations">
+        <button *ngFor="let person of people"
+                (click)="openChatModal(person)"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl
+                       hover:bg-gray-100 transition">
+          <img [src]="getUrl(person.profile)"
+               alt=""
+               class="w-10 h-10 rounded-full object-cover border" />
+          <div class="flex flex-col text-left flex-1">
+            <p class="font-medium text-gray-800 truncate">
+              {{ person.firstname }} {{ person.lastname }}
+            </p>
+            <p class="text-xs text-gray-500 truncate">
+              {{ person.lastseen === 'Just now' ? 'Online' : 'Last seen ' + person.lastseen }}
+            </p>
+          </div>
+        </button>
+      </ng-container>
 
-              }" class="flex items-center p-2 mb-2 bg-[var(--tertiary-color)] min-h-16 rounded-2xl">
-                  <img src="{{getUrl(person.profile)}}" alt="Profile Picture"
-                    class="w-10 h-10 mt-1 ml-2 mr-4 rounded-full">
-                  <div class="flex-grow">
-                    <div class="flex justify-between mx-1 overflow-x-auto ">
-                      <div>
-                        <p [ngClass]="{'font-bold':person.lastmessageref.status != 'seen'}"
-                          class="font-medium text-white text-md">{{person.firstname + ' '+ person.lastname}}</p>
-                      </div>
-
-                    </div>
-
-                    <div class="w-full px-1 font-light text-left text-white text-md">{{person.lastmessage}}</div>
-                  </div>
-                </button>
-              </ng-container>
-              <ng-template #empty>
-                <div
-                  class="flex flex-col items-center justify-center w-full h-32 mt-2 border-2 border-dashed rounded-md border-slate-300">
-                  <span>No Inbox</span>
-                  <span>Start a conversation!</span>
-                </div>
-              </ng-template>
-            </ng-template>
-          </ng-template>
-
+      <!-- —— CONVERSATIONS —— -->
+      <ng-template #conversations>
+        <ng-container *ngIf="getConvos().length; else emptyInbox">
+          <button *ngFor="let c of getConvos()"
+                  (click)="openChatModal(c)"
+                  class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition"
+                  [ngClass]="{
+                    'bg-[var(--tertiary-color)]/10':
+                      c.lastmessageref.status !== 'seen' && c.lastmessageref.senderid !== user.id,
+                    'opacity-60':
+                      c.lastmessageref.status === 'seen'
+                  }">
+            <img [src]="getUrl(c.profile)"
+                 alt=""
+                 class="w-10 h-10 rounded-full object-cover border" />
+            <div class="flex flex-col text-left flex-1">
+              <p class="font-medium text-gray-800 truncate">
+                {{ c.firstname }} {{ c.lastname }}
+              </p>
+              <p class="text-xs text-gray-500 truncate">{{ c.lastmessage }}</p>
+            </div>
+          </button>
         </ng-container>
-        <ng-template #searchingPeople>
-          <div class="flex flex-col items-center justify-center w-full h-32 rounded-md mt-">
-            <span>Searching for people ... </span>
+
+        <!-- Empty inbox -->
+        <ng-template #emptyInbox>
+          <div class="flex flex-col items-center justify-center h-40 text-sm text-gray-500">
+            <p>No inbox yet</p>
+            <p>Start a conversation!</p>
           </div>
         </ng-template>
-        <!-- end ini ken kang "ken ini su mga pandok kang teacher" -->
+      </ng-template>
 
-
-
-      </div>
-    </main>
-
-
-
-    <!-- Footer -->
-
+    </div>
   </div>
-
 </div>
 
+<!-- ================================ CHAT MODAL ================================ -->
+<div *ngIf="checkOpenModal()"
+     [@fadeInOut]
+     class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
 
+  <div class="relative w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden">
 
-<div *ngIf="checkOpenModal()" [@fadeInOut] class="modal-overlayzz">
+    <!-- Chat header -->
+    <header class="flex items-center gap-3 px-6 py-4 border-b">
+      <img [src]="getUrl(chat?.profile)"
+           alt=""
+           class="w-10 h-10 rounded-full object-cover border" />
 
+      <div class="flex-1">
+        <p class="font-medium text-gray-800">
+          {{ chat?.firstname }} {{ chat?.lastname }}
+        </p>
+        <p class="text-xs text-gray-500">
+          {{ chat?.lastseen === 'Just now' ? 'Online' : 'Last seen ' + chat?.lastseen }}
+        </p>
+      </div>
 
-  <div class="flex flex-col w-4/5 modal-contentzz h-3/4 lg:w-1/4">
-
-    <header class="flex items-center justify-between px-4 py-3 text-gray-700 lg:py-4">
-      <button (click)="closeChatModal()" class="text-[var(--tertiary-color)] focus:outline-none">
-        <i class="text-transparent fas fa-arrow-left gradient-color bg-clip-text"></i>
-      </button>
-
-      <h1 class="flex-1 text-xl font-semibold text-center">{{chat.firstname +' '+ chat.lastname}}</h1>
-      <button (click)="closeModals()" class="text-[var(--tertiary-color)] focus:outline-none">
-        <i class="text-transparent fas fa-close gradient-color bg-clip-text "></i>
+      <button (click)="closeChatModal()" class="text-gray-400 hover:text-gray-600 transition">
+        <i class="fas fa-times text-xl"></i>
       </button>
     </header>
 
+    <!-- Messages feed -->
+    <div #scrollMessages
+         class="flex-1 overflow-y-auto p-6 space-y-4">
+      <div *ngFor="let m of getMessages()"
+           class="flex"
+           [ngClass]="{ 'justify-end': m.senderid === user.id }">
 
-    <div class="linya"> </div>
-
-
-    <main class="flex-1 p-4 overflow-y-scroll" #scrollMessages>
-
-      <div class="flex flex-col ">
-        <div *ngIf="chat?.anonymous" class="flex justify-center py-2 text-gray-700">
-          {{'Both of you like'}}<b *ngFor="let interest of chat.interests">&nbsp;&nbsp;{{interest}}</b>
+        <div class="max-w-xs sm:max-w-md px-4 py-2 rounded-xl break-words text-sm leading-relaxed"
+             [ngClass]="{
+               'bg-[var(--tertiary-color)] text-white rounded-br-none':
+                 m.senderid === user.id,
+               'bg-gray-100 text-gray-800 rounded-bl-none':
+                 m.senderid !== user.id
+             }">
+          {{ m.message }}
+          <span class="block mt-1 text-[10px] text-end opacity-70">
+            {{ m.createdat ? (m.createdat | date:'shortTime') : '' }}
+          </span>
         </div>
-        <ng-container *ngFor="let message of getMessages()">
-          <!-- user ini ken-->
-          <div *ngIf="user.id == message.senderid; else notMe"
-            class="self-end p-2 mb-2 text-right bg-[var(--tertiary-color)] rounded-xl max-w-64">
-            <h1 class="text-white">{{message.message}}</h1>
-          </div>
-          <!-- ken sa teacher ini-->
-          <ng-template #notMe>
-            <div class="self-start p-2 pr-4 mb-2 text-left bg-gray-500 rounded-xl max-w-64">
-              <h1 class="text-white">{{message.message}}</h1>
-            </div>
-          </ng-template>
-        </ng-container>
-
 
       </div>
-    </main>
+    </div>
 
+    <!-- Composer -->
+    <form (submit)="sendMessage()"
+          class="flex items-center gap-3 px-4 py-3 border-t">
+      <input type="text"
+             name="message"
+             [(ngModel)]="message"
+             placeholder="Type a message…"
+             class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm
+                    focus:ring-2 focus:ring-[var(--tertiary-color)] outline-none" />
 
-    <footer>
-      <div class="bg-transparent ">
-        <div class="flex items-center mx-1 my-3">
-          <div class="relative flex items-center w-full mx-3 shadow-boxz rounded-xl">
-            <input (keyup.enter)="chat.anonymous? sendMessageAnonymous() : sendMessage()" #messageInput type="text"
-              [(ngModel)]="message" placeholder="Type your message..."
-              class="flex-1 px-3 py-2 font-normal text-black border border-teal-400 rounded-lg shadow-boxz focus:outline-none focus:ring-black focus:border-gray-600">
-            <button (click)="chat.anonymous? sendMessageAnonymous() : sendMessage()"
-              class="absolute pr-3 transform -translate-y-1/2 cursor-pointer right-2 top-1/2">
-              <i class="text-xl text-transparent fa-solid fa-paper-plane gradient-color bg-clip-text"></i>
-            </button>
-          </div>
+      <button type="submit"
+              class="p-2 text-[var(--tertiary-color)] hover:text-[var(--tertiary-color)]/80 transition">
+        <i class="fas fa-paper-plane text-xl"></i>
+      </button>
+    </form>
 
-
-
-
-        </div>
-      </div>
-    </footer>
   </div>
-
-
 </div>
+
+
+
+
 
 
 

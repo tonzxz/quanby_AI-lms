@@ -240,29 +240,54 @@ isUrgent(notif:string){
   search$?:Subscription;
   people:any = []
   searching:boolean = false
-  searchPeople(event:any){
-    this.people =[];
-    if(event.target.value.trim() == ''){
-      return;
+  // searchPeople(event:any){
+  //   this.people =[];
+  //   if(event.target.value.trim() == ''){
+  //     return;
+  //   }
+  //   if (event.key === "Enter") {
+  //     this.addInterest(event.target.value);
+  //     this.search = '';
+  //   }
+  //   if(this.interests.length>0) return;
+  //   this.searching = true;
+  //   this.search$?.unsubscribe();
+  //   this.search$ =  this.API.searchPeople(event.target.value.trim().toLowerCase()).subscribe(data=>{
+  //     this.searching = false;
+  //     if(data.success){
+  //       for(let person of data.output){
+  //         person.lastseen = this.getTimeOnline(person.lastseen);
+  //         this.people.push(person);
+  //       }
+  //     }
+  //     this.search$?.unsubscribe();
+  //   })
+  // }
+
+  searchPeople(event: any) {
+  const term = event.target.value.trim().toLowerCase()
+
+  // clear previous results first
+  this.people = []
+  if (!term) return
+
+  this.searching = true
+  this.search$?.unsubscribe()
+
+  this.search$ = this.API.searchPeople(term).subscribe(data => {
+    this.searching = false
+
+    if (data.success) {
+      this.people = data.output.map((person: any) => ({
+        ...person,
+        lastseen: this.getTimeOnline(person.lastseen)
+      }))
     }
-    if (event.key === "Enter") {
-      this.addInterest(event.target.value);
-      this.search = '';
-    }
-    if(this.interests.length>0) return;
-    this.searching = true;
-    this.search$?.unsubscribe();
-    this.search$ =  this.API.searchPeople(event.target.value.trim().toLowerCase()).subscribe(data=>{
-      this.searching = false;
-      if(data.success){
-        for(let person of data.output){
-          person.lastseen = this.getTimeOnline(person.lastseen);
-          this.people.push(person);
-        }
-      }
-      this.search$?.unsubscribe();
-    })
-  }
+
+    this.search$?.unsubscribe()
+  })
+}
+
 
   closeModals() {
     this.closeModal();

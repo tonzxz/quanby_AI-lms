@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnInit, ChangeDetectorRef, OnDestroy, ViewChild} from '@angular/core';
 import { APIService } from 'src/app/services/API/api.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +8,10 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { environment } from 'src/environments/environment';
 import { SurveyCertComponent } from 'src/app/components/student/student-modals/survey-cert/survey-cert.component';
 import { MenuItem } from 'primeng/api'; // <-- IMPORTANT for Breadcrumb Items
+import { MessagesComponent } from
+  'src/app/shared/components/messages/messages.component';
+
+
 
 @Component({
   selector: 'app-headerz',
@@ -24,6 +28,7 @@ import { MenuItem } from 'primeng/api'; // <-- IMPORTANT for Breadcrumb Items
       ]),
     ]),
   ],
+  
 })
 export class HeaderzComponent implements OnInit, OnDestroy {
   title: string = 'Quanby LMS'; // Dynamically set title
@@ -35,6 +40,20 @@ export class HeaderzComponent implements OnInit, OnDestroy {
   // For PrimeNG Breadcrumb
   breadcrumbItems: MenuItem[] = [];
   homeItem: MenuItem = {};
+
+    @ViewChild('msg', { read: MessagesComponent })
+    private msgComp?: MessagesComponent;
+
+      /** Opens the MessagesComponent’s inbox modal (stand-alone) */
+/** Show the Messages modal that lives in the template (#msg). */
+openMessagesModal(): void {
+  if (this.msgComp) {
+    this.msgComp.openInbox();          // opens the overlay
+  }
+}
+
+
+
 
   reflectFullName() {
     return this.API.userData.firstname + ' ' + this.API.userData.lastname;
@@ -323,6 +342,19 @@ this.router.events.subscribe((event) => {
     this.hideSidebar();
     this.router.navigate([location]);
   }
+
+  /** Navigate to role-based Messages page */
+gotoMessages(): void {
+  const type = this.API.getUserType();   // '0' = student, '1' = teacher, '2' = admin
+  if (type === '0') {
+    this.navigate('student/messages');
+  } else if (type === '1') {
+    this.navigate('teacher/messages');
+  } else if (type === '2') {
+    this.navigate('admin/messages');
+  }
+}
+
 
   gotoProfile() {
     if (this.API.getUserType() == '0') {

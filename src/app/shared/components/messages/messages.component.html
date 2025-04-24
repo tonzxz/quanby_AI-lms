@@ -1,0 +1,179 @@
+<!-- ============ INBOX MODAL ============ -->
+<div
+  *ngIf="inboxOpen"
+  [@fadeInOut]
+  class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
+>
+<div *ngIf="loading"  
+     class="absolute inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+  <i class="fas fa-circle-notch fa-spin text-3xl text-[var(--tertiary-color)]"></i>
+</div>
+  <div
+    class="relative w-full max-w-md sm:max-w-lg h-[85vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden"
+  >
+  <!-- Loading overlay -->
+
+
+    <!-- header -->
+    <header class="flex items-center justify-between px-6 py-4 border-b">
+      <h2 class="text-lg font-semibold text-gray-800">Messages</h2>
+      <button (click)="closeInbox()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </header>
+
+    <!-- search -->
+    <div class="p-4">
+      <div class="relative">
+        <input
+          id="person_search"
+          name="search"                  
+          [(ngModel)]="search"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup)="searchPeople($event)"
+          placeholder="Search people…"
+          class="w-full pl-10 pr-4 py-2 text-sm rounded-lg bg-gray-100
+                 focus:ring-2 focus:ring-[var(--tertiary-color)] outline-none"
+        />
+        <span
+          class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+        >
+          <i class="fas fa-search"></i>
+        </span>
+
+        <!-- dropdown -->
+        <ul
+          *ngIf="people.length && search.trim()"
+          class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-md
+                 max-h-60 overflow-y-auto"
+        >
+          <li
+            *ngFor="let p of people"
+            (click)="openChatModal(p)"
+            class="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
+          >
+            <img [src]="getUrl(p.profile)" class="w-8 h-8 rounded-full" />
+            <span class="text-sm text-gray-700 truncate flex-1">
+              {{ p.firstname }} {{ p.lastname }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- conversation list -->
+    <div class="flex-1 overflow-y-auto px-1 space-y-1">
+      <ng-container *ngIf="getConvos().length; else emptyInbox">
+        <button
+          *ngFor="let c of getConvos()"
+          (click)="openChatModal(c)"
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition"
+          [ngClass]="{
+            'bg-[var(--tertiary-color)]/10':
+              c.lastmessageref.status !== 'seen' &&
+              c.lastmessageref.senderid !== user.id,
+            'opacity-60': c.lastmessageref.status === 'seen'
+          }"
+        >
+          <img
+            [src]="getUrl(c.profile)"
+            class="w-10 h-10 rounded-full object-cover border"
+          />
+          <div class="flex flex-col text-left flex-1">
+            <p class="font-medium text-gray-800 truncate">
+              {{ c.firstname }} {{ c.lastname }}
+            </p>
+            <p class="text-xs text-gray-500 truncate">
+              {{ c.lastmessage }}
+            </p>
+          </div>
+        </button>
+      </ng-container>
+
+      <ng-template #emptyInbox>
+        <div
+          class="flex flex-col items-center justify-center h-40 text-sm text-gray-500"
+        >
+          <p>No inbox yet</p>
+          <p>Start a conversation!</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHAT MODAL ============ -->
+<div
+  *ngIf="chatOpen"
+  [@fadeInOut]
+  class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center"
+>
+  <div
+    class="relative w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-xl flex flex-col overflow-hidden"
+  >
+    <!-- header -->
+    <header class="flex items-center gap-3 px-6 py-4 border-b">
+      <img
+        [src]="getUrl(chat?.profile)"
+        class="w-10 h-10 rounded-full object-cover border"
+      />
+      <div class="flex-1">
+        <p class="font-medium text-gray-800">
+          {{ chat?.firstname }} {{ chat?.lastname }}
+        </p>
+        <p class="text-xs text-gray-500">
+          {{
+            chat?.lastseen === 'Just now'
+              ? 'Online'
+              : 'Last seen ' + chat?.lastseen
+          }}
+        </p>
+      </div>
+      <button (click)="closeChat()" class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </header>
+
+    <!-- messages -->
+    <div #scrollMessages class="flex-1 overflow-y-auto p-6 space-y-4">
+      <div
+        *ngFor="let m of getMessages()"
+        class="flex"
+        [ngClass]="{ 'justify-end': m.senderid === user.id }"
+      >
+        <div
+          class="max-w-xs sm:max-w-md px-4 py-2 rounded-xl break-words text-sm leading-relaxed"
+          [ngClass]="{
+            'bg-[var(--tertiary-color)] text-white rounded-br-none':
+              m.senderid === user.id,
+            'bg-gray-100 text-gray-800 rounded-bl-none':
+              m.senderid !== user.id
+          }"
+        >
+          {{ m.message }}
+          <span class="block mt-1 text-[10px] text-end opacity-70">
+            {{ m.createdat | date: 'shortTime' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- composer -->
+    <form (submit)="sendMessage()" class="flex items-center gap-3 px-4 py-3 border-t">
+      <input
+        type="text"
+        name="msg"
+        [(ngModel)]="message"
+        placeholder="Type a message…"
+        class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm
+               focus:ring-2 focus:ring-[var(--tertiary-color)] outline-none"
+      />
+      <button
+        type="submit"
+        class="p-2 text-[var(--tertiary-color)] hover:text-[var(--tertiary-color)]/80 transition"
+      >
+        <i class="fas fa-paper-plane text-xl"></i>
+      </button>
+    </form>
+  </div>
+</div>

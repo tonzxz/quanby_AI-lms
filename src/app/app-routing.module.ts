@@ -78,6 +78,7 @@ import { SpeechLabGuard } from './services/guard/speechlab/speechlab.guard';
 import { ChatbotComponent } from './chatbot/chatbot.component';
 import { FlashcardsComponent } from './components/student/flashcards/flashcards.component';
 import { adminGuard } from './services/guard/admin/admin.guard';
+import { MessagesComponent } from './shared/components/messages/messages.component';
 
 const routes: Routes = [
   {
@@ -134,6 +135,7 @@ const routes: Routes = [
       { path: 'to-do', component: AssignmentComponent },
       { path: 'flashcards', component: FlashcardsComponent },
       { path: 'materials', component: MaterialsComponent },
+     { path: 'messages', component: MessagesComponent, outlet: 'modal' },
       { path: 'lessons', component: LessonsComponent },
       { path: 'performance', component: PerformanceComponent },
       { path: 'texttospeech', component: TexttospeechComponent },
@@ -212,6 +214,7 @@ const routes: Routes = [
       { path: 'texttospeech', component: TexttospeechComponent },
       { path: 'teacherProfile', component: StudentProfileComponent },
       { path: 'dictionary', component: DictionaryComponent },
+  { path: 'messages', component: MessagesComponent, outlet: 'modal' },
       { path: 'chatbots', component: ChatbotComponent },
       { path: 'manageclass', component: ManageclassComponent },
       {path: 'quiz-analytics', component: QuizAnalyticsComponent},
