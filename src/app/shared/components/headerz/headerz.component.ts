@@ -172,7 +172,7 @@ openMessagesModal(): void {
       case 0: // Student
         this.displayedItems = this.studentDashboardItems;
         this.mainItemKeys = ['DASHBOARD', 'COURSES', 'MEET', 'TASKS'];
-        this.specialItemKeys = ['DICTIONARY', 'TEXT TO SPEECH'];
+        this.specialItemKeys = ['AI CHATBOT','TEXT TO SPEECH'];
         break;
       case 1: // Teacher
         this.displayedItems = this.teacherDashboardItems;
@@ -184,8 +184,9 @@ openMessagesModal(): void {
           'MANAGE CLASS',
           'MEET',
           'GRADES',
+         
         ];
-        this.specialItemKeys = ['DICTIONARY', 'TEXT TO SPEECH'];
+        this.specialItemKeys = [ 'AI CHATBOT' , 'TEXT TO SPEECH'];
         break;
       case 2: // Admin
         this.displayedItems = this.adminDashboardItems;
@@ -276,7 +277,7 @@ this.router.events.subscribe((event) => {
       '/student/courses': { label: 'Courses' },
       '/student/quanhub': { label: 'Meet' },
       '/student/to-do': { label: 'Tasks' },
-      // '/student/chatbots': { label: 'AI Chatbot' },
+      '/student/chatbots': { label: 'AI Chatbot' },
       '/student/texttospeech': { label: 'Text to Speech' },
       '/student/speechlab': { label: 'Speech Lab' },
       '/student/performance': { label: 'Performance' },
@@ -413,11 +414,12 @@ gotoMessages(): void {
       icon: 'bx-line-chart',
       routerLink: '/student/performance',
     },
-    DICTIONARY: {
-      redirect: 'student/dictionary',
+     'AI CHATBOT': {
+      redirect: '/student/chatbots',
       icon: 'bx-book-bookmark',
-      routerLink: '/student/dictionary',
+      routerLink: '/student/chatbots',
     },
+ 
     'TEXT TO SPEECH': {
       redirect: 'student/texttospeech',
       icon: 'bx-user-voice',
@@ -466,10 +468,10 @@ gotoMessages(): void {
       icon: 'bx-bar-chart-alt-2',
       routerLink: '/teacher/grade-list',
     },
-    DICTIONARY: {
-      redirect: 'teacher/dictionary',
+    'AI CHATBOT': {
+      redirect: '/teacher/chatbots',
       icon: 'bx-book-bookmark',
-      routerLink: '/teacher/dictionary',
+      routerLink: '/teacher/chatbots',
     },
     'TEXT TO SPEECH': {
       redirect: 'teacher/texttospeech',
@@ -535,7 +537,7 @@ gotoMessages(): void {
     { for: '0', name: 'Go to Meet', link: '/student/quanhub' },
     { for: '0', name: 'Go to Self Study', link: '/student/selfstudylab' },
     { for: '0', name: 'Go to Practice', link: '/student/selfstudylab' },
-    { for: '0', name: 'Go to Dictionary', link: '/student/dictionary' },
+    { for: '0', name: 'Go to Chatbot', link: '/student/chatbots' },
     { for: '0', name: 'Go to Profile', link: '/student/studentProfile' },
     { for: '0', name: 'Go to Messages', link: '/student/dashboard' },
     { for: '0', name: 'Go to Speechlab', link: '/student/speechlab' },
@@ -547,6 +549,7 @@ gotoMessages(): void {
     { for: '1', name: 'Go to Grades', link: '/teacher/grade-list' },
     { for: '1', name: 'Go to Text-to-Speech', link: '/teacher/texttospeech' },
     { for: '1', name: 'Go to Profile', link: '/teacher/teacherProfile' },
+    { for: '1', name: 'Go to Chatbot', link: '/teacher/chatbots' },
     { for: '1', name: 'Go to Messages', link: '/teacher/communication' },
     { for: '1', name: 'Go to Alert', link: '/teacher/communication' },
     { for: '1', name: 'Go to Broadcast', link: '/teacher/communication' },
