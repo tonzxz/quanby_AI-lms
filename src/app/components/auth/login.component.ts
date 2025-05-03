@@ -11,8 +11,8 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginComponent implements OnInit {
   // Dynamic variables for text and placeholders
-  pageTitle: string = 'Upskill for Success and';
-  pageSubtitles: string[] = ['Shape your skills', 'with',];
+  pageTitle: string = 'Stay Active and Engaged';
+  pageSubtitles: string[] = ['Learn New Things', 'Online',];
   trainingProgramTitle: string = environment.appTitle;
   trainingDescription: string = environment.appPhrase;
   welcomeText: string = environment.welcomeText;

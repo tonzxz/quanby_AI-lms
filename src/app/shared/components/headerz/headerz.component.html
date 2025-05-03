@@ -1,12 +1,12 @@
 <header
-  class=" !z-50  rounded-md  bg-primary-50 mt-3 mb-3.5 mx-2.5 md:mx-4 lg:mx-6 px-1 lg:py-3 md:py-3 py-2"
+  class=" !z-50  rounded-md  bg-primary-50 mt-3 mb-3.5 mx-0 md:mx-4 lg:mx-6 px-0 lg:py-3 md:py-3 py-2"
 >
   <div
-    class="flex items-center justify-between pl-2 pr-6 font-mx-auto lg:px-4 md:px-4"
+    class="flex items-center justify-between pl-2 pr-3 md:pr-6 lg:pr-6 font-mx-auto lg:px-4 md:px-4"
   >
     <!-- REPLACED "Welcome..." SPAN WITH PrimeNG BREADCRUMB -->
    <p-breadcrumb [model]="breadcrumbItems" [home]="homeItem"
-              styleClass="bg-transparent border-0 poppins-r">
+              styleClass="bg-transparent border-0 poppins-r hidden md:block lg:block">
 </p-breadcrumb>
     <!-- END BREADCRUMB -->
 
@@ -114,7 +114,7 @@
     <div class="flex items-center ml-auto gap-4">
       <!-- Search Bar -->
       <div
-        class="w-[250px] md:w-[400px] lg:w-[550px] flex items-center p-0 h-10  rounded-2xl !pl-4 border-2 border-primary-950/10 bg-primary-100 relative overflow-hidden"
+        class="hidden md:flex lg:flex w-[250px] md:w-[400px] lg:w-[550px]  items-center p-0 h-10  rounded-2xl !pl-4 border-2 border-primary-950/10 bg-primary-100 relative overflow-hidden"
       >
         <input
           class="w-full px-2 py-1 text-primary-950 bg-transparent border-none focus:outline-none "

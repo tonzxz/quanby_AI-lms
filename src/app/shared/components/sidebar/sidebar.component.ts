@@ -36,6 +36,11 @@ export class SidebarComponent implements OnInit {
       icon: 'bx-extension',
       routerLink: '/student/courses',
     },
+    'SPEECHLAB': {
+      redirect: '/student/speechlab',
+      icon: 'bx-notepad',
+      routerLink: '/student/speechlab',
+    },
     MEET: {
       redirect: 'student/quanhub',
       icon: 'bx-video',
@@ -52,21 +57,13 @@ export class SidebarComponent implements OnInit {
       icon: 'bx bxs-carousel',
       routerLink: '/student/flashcards',
     },    
-    'SPEECHLAB': {
-      redirect: '/student/speechlab',
-      icon: 'bx-notepad',
-      routerLink: '/student/speechlab',
-    },
+    
     "PERFORMANCE" :  {
       redirect: 'student/performance',
       icon : 'bx-line-chart',
       routerLink: '/student/performance'
     },
-    // 'SPEECH ANALYZER': {
-    //   redirect: 'student/speech-analyzer/record-speech',
-    //   icon: 'bx-spreadsheet',
-    //   routerLink: '/student/speech-analyzer/record-speech',
-    // },
+  
   };
 
   teacherDashboardItems = {
@@ -96,10 +93,15 @@ export class SidebarComponent implements OnInit {
     icon: 'bx-group', // Suggesting a group icon to represent managing a class.
     routerLink: '/teacher/manageclass',
   },
-  COMMUNICATION: {
+  ANNOUNCEMENT: {
     redirect: 'teacher/communication',
     icon: 'bx-group', // Suggesting a group icon to represent managing a class.
     routerLink: '/teacher/communication',
+    },
+   'SPEECHLAB': {
+    redirect: 'teacher/speechlab',
+    icon: 'bx-spreadsheet',
+    routerLink: '/teacher/speechlab',
   },
   MEET: {
     redirect: 'teacher/quanhub',
@@ -112,16 +114,8 @@ export class SidebarComponent implements OnInit {
     routerLink: '/teacher/grade-list',
     },
      
-  // 'SPEECHLAB': {
-  //   redirect: 'teacher/speechlab',
-  //   icon: 'bx-spreadsheet',
-  //   routerLink: '/teacher/speechlab',
-  // },
-  // 'SPEECH ANALYZER': {
-  //   redirect: 'teacher/speech-analyzer/record-speech',
-  //   icon: 'bx-spreadsheet',
-  //   routerLink: '/teacher/speech-analyzer/record-speech',
-  // },
+ 
+ 
   };
 
   adminDashboardItems = {
@@ -149,10 +143,16 @@ export class SidebarComponent implements OnInit {
 
 
   studentExtraDashboardItems:any = {
-    "AI CHATBOT": {
-      redirect: 'student/chatbots',
-      icon: 'bx-book-bookmark',
-      routerLink: '/student/chatbots',
+    // "AI CHATBOT": {
+    //   redirect: 'student/chatbots',
+    //   icon: 'bx-book-bookmark',
+    //   routerLink: '/student/chatbots',
+    // },
+  
+      'SPEECH ANALYZER': {
+      redirect: 'student/speech-analyzer/record-speech',
+      icon: 'bx-spreadsheet',
+      routerLink: '/student/speech-analyzer/record-speech',
     },
     "TEXT TO SPEECH": {
       redirect: 'student/texttospeech',
@@ -162,10 +162,15 @@ export class SidebarComponent implements OnInit {
   }
 
   teacherExtraDashboardItems:any = {
-    "AI CHATBOT": {
-      redirect: 'teacher/chatbots',
-      icon: 'bx-book-bookmark',
-      routerLink: '/teacher/chatbots',
+    // "AI CHATBOT": {
+    //   redirect: 'teacher/chatbots',
+    //   icon: 'bx-book-bookmark',
+    //   routerLink: '/teacher/chatbots',
+    // },
+       'SPEECH ANALYZER': {
+    redirect: 'teacher/speech-analyzer/record-speech',
+    icon: 'bx-spreadsheet',
+    routerLink: '/teacher/speech-analyzer/record-speech',
     },
     "TEXT TO SPEECH": {
       redirect: 'teacher/texttospeech',

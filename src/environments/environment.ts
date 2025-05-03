@@ -7,7 +7,7 @@
   socket: 'wss://core.quanbylab.com/websocket',
   nodeserver: 'https://core.quanbylab.com',
   api: 'https://core.quanbylab.com/api.php',
-  app: 'quanby_speechlab',
+  app: 'catsu',
 
   genKey: 'AIzaSyAx90U0jErJ-OZfzNDwrDkTzaxBzJyH904',
   apiKey: '$2a$12$T3HuBFQs7UwsNdNnEH4.v.LWADk3/4MLWhL2EuBQ/aueWjl/407vW',
@@ -35,15 +35,16 @@
   maintenance: false,
 
   exclude: [
-    'SPEECHLAB',
+    // 'SPEECHLAB',
     'PERFORMANCE',
-    'COMMUNICATION'
+    // 'COMMUNICATION',
+    'FLASHCARDS',
   ],
-  appTitle: 'Quanby Learning Management System',
-  appShortTitle: 'Quanby LMS',
-  appPhrase:'Empowering Growth Through Innovative Online Learning',
+  appTitle: 'Catanduanes State University SpeechLab',
+  appShortTitle: 'CATSU Speechlab',
+  appPhrase:'Empowering Speech Innovative Online Learning',
   welcomeText: 'Welcome! Learning starts here',
-  appLogo:'assets/login/quanby.png',
+  appLogo:'assets/login/catsu.png',
   light:{
     50: '{stone.50}',    
     100: '{slate.50}',   

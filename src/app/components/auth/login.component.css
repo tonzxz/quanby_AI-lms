@@ -31,9 +31,9 @@
   transition: background-color 0.5s ease-in;
   background: linear-gradient(
     to bottom right,
-    var(--p-primary-600),
-    var(--p-primary-400),
-    var(--p-primary-600)
+    var(--primary-color),
+    var(--secondary-color),
+    var(--primary-color)
   );
 }
 
