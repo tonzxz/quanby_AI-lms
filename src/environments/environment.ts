@@ -39,7 +39,7 @@
     'PERFORMANCE',
     'COMMUNICATION'
   ],
-  appTitle: 'QuanbyLearning Management System',
+  appTitle: 'Quanby Learning Management System',
   appShortTitle: 'Quanby LMS',
   appPhrase:'Empowering Growth Through Innovative Online Learning',
   welcomeText: 'Welcome! Learning starts here',
