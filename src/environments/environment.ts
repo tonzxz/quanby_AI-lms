@@ -39,11 +39,11 @@
     'PERFORMANCE',
     'COMMUNICATION'
   ],
-  appTitle: 'UST-L Learning Management System',
-  appShortTitle: 'UST-L LMS',
+  appTitle: 'QuanbyLearning Management System',
+  appShortTitle: 'Quanby LMS',
   appPhrase:'Empowering Growth Through Innovative Online Learning',
   welcomeText: 'Welcome! Learning starts here',
-  appLogo:'assets/login/ustl.png',
+  appLogo:'assets/login/quanby.png',
   light:{
     50: '{stone.50}',    
     100: '{slate.50}',   
